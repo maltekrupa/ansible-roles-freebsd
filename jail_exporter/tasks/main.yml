@@ -1,0 +1,21 @@
+---
+- name: Install
+  ansible.builtin.package:
+    name: jail_exporter
+    state: present
+
+- name: Enable RACCT/RCTL
+  ansible.builtin.lineinfile:
+    path: /boot/loader.conf
+    regexp: "^kern.racct.enable.+$"
+    line: 'kern.racct.enable="1"'
+
+- name: Enable service
+  community.general.sysrc:
+    name: jail_exporter_enable
+    value: "YES"
+
+- name: Start service
+  ansible.builtin.service:
+    name: jail_exporter
+    state: started
