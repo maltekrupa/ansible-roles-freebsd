@@ -1,0 +1,80 @@
+global
+  log /dev/log  local0
+  log /dev/log  local1 notice
+  chroot /var/lib/haproxy
+  stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd listeners
+  stats timeout 30s
+  user haproxy
+  group haproxy
+  daemon
+
+  # modern configuration
+  # as per: https://ssl-config.mozilla.org/#server=haproxy&version=2.4&config=modern&openssl=1.1.1k&guideline=5.6
+  ssl-default-bind-ciphersuites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256
+  ssl-default-bind-options prefer-client-ciphers no-sslv3 no-tlsv10 no-tlsv11 no-tlsv12 no-tls-tickets
+
+  ssl-default-server-ciphersuites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256
+  ssl-default-server-options no-sslv3 no-tlsv10 no-tlsv11 no-tlsv12 no-tls-tickets
+{% for global_var in haproxy_global_vars %}
+  {{ global_var }}
+{% endfor %}
+
+defaults
+  log global
+  mode  http
+  option  httplog
+  option  dontlognull
+  timeout connect {{ haproxy_connect_timeout }}
+  timeout client {{ haproxy_client_timeout }}
+  timeout server {{ haproxy_server_timeout }}
+  errorfile 400 /etc/haproxy/errors/400.http
+  errorfile 403 /etc/haproxy/errors/403.http
+  errorfile 408 /etc/haproxy/errors/408.http
+  errorfile 500 /etc/haproxy/errors/500.http
+  errorfile 502 /etc/haproxy/errors/502.http
+  errorfile 503 /etc/haproxy/errors/503.http
+  errorfile 504 /etc/haproxy/errors/504.http
+
+frontend stats
+    bind localhost:8404
+    stats enable
+    stats uri /
+    stats refresh 10s
+    stats admin if LOCALHOST
+
+frontend incoming
+    mode     http
+    bind     :::80 v4v6
+    bind     :::443 v4v6 ssl crt /etc/ssl/private alpn h2,http/1.1
+    redirect scheme https code 301 if !{ ssl_fc }
+    http-response set-header Strict-Transport-Security max-age=63072000
+    default_backend no-match
+
+{% for item in haproxy_servers %}
+    acl acl_{{ item.fqdn }} hdr(host) -i {{ item.fqdn }}
+    use_backend be_{{ item.name }} if acl_{{ item.fqdn }}
+{% endfor %}
+
+backend no-match
+    http-request deny deny_status 404
+
+{% for item in haproxy_servers %}
+backend be_{{ item.name }}
+{% if item.mode is defined and item.mode %}
+    option httpchk {{ item.mode }}
+{% else %}
+    mode 'http'
+{% endif %}
+{% if item.balance is defined and item.balance %}
+    balance {{ item.balance }}
+{% else %}
+    balance 'roundrobin'
+{% endif %}
+    option forwardfor
+{% if item.healthcheck is defined and item.healthcheck %}
+    option httpchk {{ item.healthcheck }}
+{% endif %}
+{% for srv in item.address %}
+    server {{ item.name }}-{{ loop.index }} {{ srv }} check
+{% endfor %}
+{% endfor %}

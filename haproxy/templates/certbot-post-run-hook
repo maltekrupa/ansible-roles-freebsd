@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+readonly BASE_PATH="/etc/letsencrypt/live/"
+
+# Iterate over all directories in the letsencrypt live directory
+# and create something that haproxy is able to read.
+for i in $(find $BASEPATH -maxdepth 1 -mindepth 1 -type d)
+do
+  pushd $i
+  fqdn="${i/$BASEPATH/}"
+
+  cat ${fqdn}/cert.pem ${fqdn}/chain.pem ${fqdn}/privkey.pem > ${fqdn}.pem
+  chown root:ssl-cert m.nafn.de.pem
+  chmod 640 m.nafn.de.pem
+  mv ${fqdn}.pem /etc/ssl/private
+
+  popd
+done

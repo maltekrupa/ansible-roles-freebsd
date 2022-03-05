@@ -1,0 +1,54 @@
+---
+- name: Create ops group
+  group:
+    state: present
+    name: ops
+  tags:
+    - users
+
+- name: Create users
+  user:
+    name: "{{ item }}"
+    group: ops
+    shell: /bin/sh
+  loop:
+    "{{ users_create.keys()|flatten(levels=1) }}"
+  tags:
+    - users
+
+- name: Create .ssh directory
+  file:
+    state: directory
+    path: "/home/{{ item }}/.ssh"
+    owner: "{{ item }}"
+    group: ops
+    mode: 0700
+  loop:
+    "{{ users_create.keys()|flatten(levels=1) }}"
+  when:
+    users_create[item].ssh_keys is defined
+  tags:
+    - users
+
+- name: Set authorized keys
+  copy:
+    content: "{{ users_create[item].ssh_keys }}"
+    dest: "/home/{{ item }}/.ssh/authorized_keys"
+    owner: "{{ item }}"
+    group: ops
+    mode: 0600
+  loop:
+    "{{ users_create.keys()|flatten(levels=1) }}"
+  when:
+    users_create[item].ssh_keys is defined
+  tags:
+    - users
+
+- name: Remove users
+  user:
+    name: "{{ item }}"
+    state: absent
+  loop:
+   "{{ users_remove }}"
+  tags:
+    - users

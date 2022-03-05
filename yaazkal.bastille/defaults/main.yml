@@ -1,0 +1,9 @@
+---
+bastille_prefix: "/usr/local/bastille"
+bastille_zfs_enable: ""
+bastille_zfs_zpool: ""
+bastille_ext_if: "vtnet0"
+bastille_releases:
+  - 13.0-RELEASE
+bastille_timezone: "Etc/UTC"
+bastille_pkg_cached: no

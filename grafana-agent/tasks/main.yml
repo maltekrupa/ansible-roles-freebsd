@@ -1,0 +1,53 @@
+---
+- name: Download
+  ansible.builtin.get_url:
+    url: "https://github.com/grafana/agent/releases/download/{{ grafana_agent_version }}/agent-freebsd-amd64.zip"
+    dest: /tmp/agent-freebsd-amd64.zip
+    checksum: sha256:ec067782cc0fcd9c4e951fd6dd0d8013df7f5ed2cd0acb495ab3acfeb6e72b92
+    mode: 0750
+    owner: root
+    group: wheel
+
+- name: Extract archive
+  ansible.builtin.command:
+    cmd: /usr/bin/unzip -d /tmp -u /tmp/agent-freebsd-amd64.zip
+    creates: /tmp/agent-freebsd-amd64
+
+- name: Move binary to /usr/local/bin
+  ansible.builtin.copy:
+    src: /tmp/agent-freebsd-amd64
+    dest: /usr/local/bin/grafana-agent
+    remote_src: yes
+    mode: 0750
+    owner: root
+    group: wheel
+
+- name: Configuration file
+  ansible.builtin.template:
+    src: etc_grafana-agent.ini
+    dest: /etc/grafana-agent.ini
+    mode: 0750
+    owner: root
+    group: wheel
+  notify:
+    - restart
+
+- name: Rc.d script
+  ansible.builtin.template:
+    src: etc_rc.d_grafana-agent
+    dest: /etc/rc.d/grafana-agent
+    mode: 0750
+    owner: root
+    group: wheel
+  notify:
+    - restart
+
+- name: Enable service
+  community.general.sysrc:
+    name: grafana_agent_enable
+    value: "YES"
+
+- name: Start service
+  ansible.builtin.service:
+    name: grafana-agent
+    state: started

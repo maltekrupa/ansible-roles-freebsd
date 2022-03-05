@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# PROVIDE: grafana-agent
+# REQUIRE: LOGIN
+# KEYWORD: shutdown
+
+# Add the following lines to /etc/rc.conf to enable grafana agent
+# grafana_agent_enable="YES"
+
+. /etc/rc.subr
+
+name=grafana_agent
+rcvar=grafana_agent_enable
+
+load_rc_config $name
+
+: ${grafana_agent_enable:="NO"}
+: ${grafana_agent_config:="/etc/grafana-agent.ini"}
+
+pidfile="/var/run/${name}.pid"
+required_files="${grafana_agent_config}"
+
+procname="/usr/local/bin/grafana-agent"
+command="/usr/sbin/daemon"
+command_args="-p ${pidfile} -t ${name} \
+  /usr/bin/env ${grafana_env} ${procname} \
+  -config.file=${grafana_agent_config}"
+
+run_rc_command "$1"
