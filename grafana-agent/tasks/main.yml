@@ -13,10 +13,10 @@
     cmd: /usr/bin/unzip -d /tmp -u /tmp/agent-freebsd-amd64.zip
     creates: /tmp/agent-freebsd-amd64
 
-- name: Move binary to /usr/local/bin
+- name: "Move binary to {{ grafana_agent_binary_file }}"
   ansible.builtin.copy:
     src: /tmp/agent-freebsd-amd64
-    dest: /usr/local/bin/grafana-agent
+    dest: "{{ grafana_agent_binary_file }}"
     remote_src: yes
     mode: 0750
     owner: root
@@ -25,17 +25,17 @@
 - name: Configuration file
   ansible.builtin.template:
     src: etc_grafana-agent.ini
-    dest: /etc/grafana-agent.ini
+    dest: "{{ grafana_agent_config_file }}"
     mode: 0750
     owner: root
     group: wheel
   notify:
     - restart
 
-- name: Rc.d script
+- name: rc.d script
   ansible.builtin.template:
     src: etc_rc.d_grafana-agent
-    dest: /etc/rc.d/grafana-agent
+    dest: "{{ grafana_agent_rcd_file }}"
     mode: 0750
     owner: root
     group: wheel

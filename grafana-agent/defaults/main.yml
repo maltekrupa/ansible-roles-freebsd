@@ -1,2 +1,14 @@
 ---
 grafana_agent_version: v0.23.0
+
+grafana_agent_path_prefix: /usr/local
+grafana_agent_config_file: "{{ grafana_agent_path_prefix }}/etc/grafana-agent.yml"
+grafana_agent_binary_file: "{{ grafana_agent_path_prefix }}/bin/grafana-agent"
+grafana_agent_rcd_file: "{{ grafana_agent_path_prefix }}/etc/rc.d/grafana-agent"
+grafana_agent_wal_directory: "/var/db/grafana-agent"
+grafana_agent_log_position_file: "/var/db/grafana-agent-log-position.yml"
+
+grafana_agent_metrics_username: ""
+grafana_agent_metrics_password: ""
+grafana_agent_logs_username: ""
+grafana_agent_logs_password: ""

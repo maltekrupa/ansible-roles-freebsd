@@ -15,12 +15,12 @@ rcvar=grafana_agent_enable
 load_rc_config $name
 
 : ${grafana_agent_enable:="NO"}
-: ${grafana_agent_config:="/etc/grafana-agent.ini"}
+: ${grafana_agent_config:="{{ grafana_agent_config_file }}"}
 
 pidfile="/var/run/${name}.pid"
 required_files="${grafana_agent_config}"
 
-procname="/usr/local/bin/grafana-agent"
+procname="{{ grafana_agent_binary_file }}"
 command="/usr/sbin/daemon"
 command_args="-p ${pidfile} -t ${name} \
   /usr/bin/env ${grafana_env} ${procname} \
