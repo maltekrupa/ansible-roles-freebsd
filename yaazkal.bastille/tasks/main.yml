@@ -78,3 +78,4 @@
     - "{{ bastille_jails }}"
     - templates
     - skip_missing: yes
+  when: bastille_jails is defined
