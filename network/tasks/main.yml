@@ -1,0 +1,25 @@
+---
+- name: Configure IPv4
+  community.general.sysrc:
+    name: "ifconfig_{{ network_interface }}"
+    value: "inet {{ network_ipv4_address }} netmask {{ network_ipv4_netmask }}"
+
+- name: Configure IPv4 default gateway
+  community.general.sysrc:
+    name: "defaultrouter"
+    value: "{{ network_ipv4_gateway }}"
+
+- name: Configure IPv6
+  community.general.sysrc:
+    name: "ifconfig_{{ network_interface }}_ipv6"
+    value: "inet6 {{ network_ipv6_address }} prefixlen {{ network_ipv6_prefixlen }}"
+
+- name: Configure IPv6 default gateway
+  community.general.sysrc:
+    name: "ipv6_defaultrouter"
+    value: "{{ network_ipv6_gateway }}%{{ network_interface }}"
+
+- name: Populate /etc/resolv.conf
+  ansible.builtin.template:
+    src: resolv.conf
+    dest: /etc/resolv.conf

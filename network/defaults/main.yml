@@ -1,0 +1,10 @@
+---
+network_interface: ""
+
+network_ipv4_address: ""
+network_ipv4_netmask: ""
+network_ipv4_gateway: ""
+
+network_ipv6_address: ""
+network_ipv6_prefixlen: ""
+network_ipv6_gateway: ""
