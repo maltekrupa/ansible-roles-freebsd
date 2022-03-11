@@ -22,7 +22,7 @@ required_files="${grafana_agent_config}"
 
 procname="{{ grafana_agent_binary_file }}"
 command="/usr/sbin/daemon"
-command_args="-p ${pidfile} -t ${name} \
+command_args="-p ${pidfile} -t ${name} -o /var/log/grafana-agent.log \
   /usr/bin/env ${grafana_env} ${procname} \
   -config.file=${grafana_agent_config}"
 
