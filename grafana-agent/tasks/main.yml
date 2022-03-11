@@ -1,17 +1,26 @@
 ---
+- name: Check if binary already exist
+  ansible.builtin.stat:
+    path: "{{ grafana_agent_binary_file }}"
+    checksum_algorithm: sha256
+  register: binary_file
+
 - name: Download
   ansible.builtin.get_url:
     url: "https://github.com/grafana/agent/releases/download/{{ grafana_agent_version }}/agent-freebsd-amd64.zip"
     dest: /tmp/agent-freebsd-amd64.zip
-    checksum: sha256:ec067782cc0fcd9c4e951fd6dd0d8013df7f5ed2cd0acb495ab3acfeb6e72b92
+    checksum: "sha256:{{ grafana_agent_checksum_archive }}"
+    force: no
     mode: 0750
     owner: root
     group: wheel
+  when: binary_file.stat.checksum != grafana_agent_checksum_binary
 
 - name: Extract archive
   ansible.builtin.command:
     cmd: /usr/bin/unzip -d /tmp -u /tmp/agent-freebsd-amd64.zip
     creates: /tmp/agent-freebsd-amd64
+  when: binary_file.stat.checksum != grafana_agent_checksum_binary
 
 - name: "Move binary to {{ grafana_agent_binary_file }}"
   ansible.builtin.copy:
@@ -21,6 +30,7 @@
     mode: 0750
     owner: root
     group: wheel
+  when: binary_file.stat.checksum != grafana_agent_checksum_binary
 
 - name: Configuration file
   ansible.builtin.template:
