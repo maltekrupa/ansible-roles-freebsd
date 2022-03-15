@@ -40,7 +40,7 @@
     owner: root
     group: wheel
   notify:
-    - restart
+    - restart grafana-agent
 
 - name: rc.d script
   ansible.builtin.template:
@@ -50,7 +50,7 @@
     owner: root
     group: wheel
   notify:
-    - restart
+    - restart grafana-agent
 
 - name: Enable service
   community.general.sysrc:
