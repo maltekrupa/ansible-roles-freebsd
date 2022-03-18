@@ -15,43 +15,6 @@
     name: bastille_enable
     value: "YES"
 
-- name: Setup cloned interfaces
-  community.general.sysrc:
-    name: cloned_interfaces
-    value: lo1
-
-- name: Setup lo1 interface name
-  community.general.sysrc:
-    name: ifconfig_lo1_name
-    value: bastille0
-
-- name: Start cloned interface
-  ansible.builtin.command:
-    cmd: service netif cloneup
-
-- name: Configure pf
-  ansible.builtin.template:
-    src: etc/pf.conf.j2
-    dest: /etc/pf.conf
-  notify: restart pf
-
-- name: Enable pf
-  community.general.sysrc:
-    name: pf_enable
-    value: "YES"
-
-- name: Start pf
-  ansible.builtin.service:
-    name: pf
-    state: started
-  register: packet_filter_started
-
-- name: Wait and reconnect after packet filter started
-  ansible.builtin.wait_for_connection:
-    delay: 1
-    connect_timeout: 1
-  when: packet_filter_started.changed
-
 - name: Bootstrap releases
   ansible.builtin.command:
     cmd: "bastille bootstrap {{ item }} update"
@@ -66,7 +29,7 @@
 
 - name: Create jails
   ansible.builtin.command:
-    cmd: bastille create {{ item.options | default('') }} {{ item.name }} {{ item.release }} {{ item.ip }} bastille0
+    cmd: bastille create {{ item.name }} {{ item.release }} {{ item.ip }} {{ item.interface }}
     creates: "{{ bastille_prefix }}/jails/{{ item.name }}/root/COPYRIGHT"
   loop: "{{ bastille_jails }}"
   when: bastille_jails is defined
