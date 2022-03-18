@@ -10,6 +10,16 @@
     src: usr/local/etc/bastille/bastille.conf.j2
     dest: /usr/local/etc/bastille/bastille.conf
 
+- name: Bastillefile base
+  ansible.builtin.template:
+    src: Bastillefile-base
+    dest: /usr/local/bastille/templates/default/base/Bastillefile
+
+- name: NAT64 resolv.conf for jails
+  ansible.builtin.template:
+    src: nat64-resolv.conf
+    dest: /usr/local/bastille/templates/default/base/resolv.conf
+
 - name: Enable service
   community.general.sysrc:
     name: bastille_enable
