@@ -1,0 +1,26 @@
+---
+- name: Install
+  community.general.pkgng:
+    name: ezjail
+    state: present
+    # cached: False is too slow
+    cached: True
+
+- name: Enable
+  community.general.sysrc:
+    name: "ezjail_enable"
+    value: "YES"
+
+- name: Create loopback interface
+  community.general.sysrc:
+    name: "cloned_interfaces"
+    value: "lo1"
+
+- name: Start loopback interface
+  ansible.builtin.command:
+    cmd: service netif cloneup
+
+- name: Populate basejail with -RELEASE
+  ansible.builtin.command:
+    cmd: ezjail-admin install -p
+    creates: /usr/jails/basejail/usr
