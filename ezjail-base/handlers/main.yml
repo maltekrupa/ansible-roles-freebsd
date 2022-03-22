@@ -1,6 +1,0 @@
----
-
-- name: restart jails
-  ansible.builtin.service:
-    name: jail
-    state: restarted

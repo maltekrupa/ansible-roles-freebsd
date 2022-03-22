@@ -24,3 +24,15 @@
   ansible.builtin.command:
     cmd: ezjail-admin install -p
     creates: /usr/jails/basejail/usr
+
+- name: Copy example flavour to ipv6-only
+  ansible.builtin.copy:
+    src: /usr/jails/flavours/example
+    dest: /usr/jails/flavours/ipv6-only
+    remote_src: yes
+    force: no
+
+- name: NAT64 resolv.conf for jails
+  ansible.builtin.template:
+    src: ipv6-only-resolv.conf
+    dest: /usr/jails/flavours/ipv6-only/etc/resolv.conf
