@@ -4,6 +4,18 @@
     name: "ifconfig_{{ network_interface }}"
     value: "inet {{ network_ipv4_address }} netmask {{ network_ipv4_netmask }}"
 
+- name: Configure static route interfaces
+  community.general.sysrc:
+    name: "static_routes"
+    value: "{{ network_interface }}"
+  when: network_ipv4_needs_static_route
+
+- name: Configure static IPv4 route
+  community.general.sysrc:
+    name: "route_{{ network_interface }}"
+    value: "{{ network_ipv4_gateway }} -iface {{ network_interface }}"
+  when: network_ipv4_needs_static_route
+
 - name: Configure IPv4 default gateway
   community.general.sysrc:
     name: "defaultrouter"
