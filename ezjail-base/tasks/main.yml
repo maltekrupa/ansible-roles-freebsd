@@ -20,6 +20,11 @@
   ansible.builtin.command:
     cmd: service netif cloneup
 
+- name: Create configuration file
+  ansible.builtin.template:
+    src: ezjail.conf
+    dest: /usr/local/etc/ezjail.conf
+
 - name: Populate basejail with -RELEASE
   ansible.builtin.command:
     cmd: ezjail-admin install -p
@@ -32,7 +37,7 @@
     remote_src: yes
     force: no
 
-- name: NAT64 resolv.conf for jails
+- name: NAT64 resolv.conf for ipv6-only jails
   ansible.builtin.template:
     src: ipv6-only-resolv.conf
     dest: /usr/jails/flavours/ipv6-only/etc/resolv.conf
