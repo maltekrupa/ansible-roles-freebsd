@@ -1,6 +1,6 @@
 ---
 network_interface: ""
-network_is_hetzner_cloud: ""
+network_ipv4_needs_static_route: ""
 
 network_ipv4_address: ""
 network_ipv4_netmask: ""
