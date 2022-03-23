@@ -32,7 +32,7 @@
 
 - name: Copy example flavour to ipv6-only
   ansible.builtin.copy:
-    src: /usr/jails/flavours/example
+    src: /usr/jails/flavours/example/
     dest: /usr/jails/flavours/ipv6-only
     remote_src: yes
     force: no
