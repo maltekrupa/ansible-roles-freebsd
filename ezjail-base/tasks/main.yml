@@ -19,6 +19,7 @@
 - name: Start loopback interface
   ansible.builtin.command:
     cmd: service netif cloneup
+  when: not "lo1" in ansible_interfaces
 
 - name: Create configuration file
   ansible.builtin.template:
