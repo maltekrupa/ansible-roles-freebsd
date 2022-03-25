@@ -14,13 +14,13 @@
     mode: 0750
     owner: root
     group: wheel
-  when: binary_file.stat.checksum != grafana_agent_checksum_binary
+  when: binary_file.stat.checksum is not defined or binary_file.stat.checksum != grafana_agent_checksum_binary
 
 - name: Extract archive
   ansible.builtin.command:
     cmd: /usr/bin/unzip -d /tmp -u /tmp/agent-freebsd-amd64.zip
     creates: /tmp/agent-freebsd-amd64
-  when: binary_file.stat.checksum != grafana_agent_checksum_binary
+  when: binary_file.stat.checksum is not defined or binary_file.stat.checksum != grafana_agent_checksum_binary
 
 - name: "Move binary to {{ grafana_agent_binary_file }}"
   ansible.builtin.copy:
@@ -30,7 +30,7 @@
     mode: 0750
     owner: root
     group: wheel
-  when: binary_file.stat.checksum != grafana_agent_checksum_binary
+  when: binary_file.stat.checksum is not defined or binary_file.stat.checksum != grafana_agent_checksum_binary
 
 - name: Configuration file
   ansible.builtin.template:
