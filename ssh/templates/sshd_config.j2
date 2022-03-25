@@ -1,0 +1,18 @@
+AcceptEnv LANG LC_*
+ChallengeResponseAuthentication no
+Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes256-ctr
+GSSAPIAuthentication no
+HostKey /etc/ssh/ssh_host_ed25519_key
+HostKey /etc/ssh/ssh_host_rsa_key
+KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512
+PasswordAuthentication no
+PermitRootLogin prohibit-password
+Port 22
+PrintMotd no
+Protocol 2
+Subsystem sftp /usr/libexec/sftp-server
+SyslogFacility AUTH
+UseDNS no
+UsePAM yes
+X11Forwarding no
