@@ -1,0 +1,38 @@
+---
+- name: Create jails dataset
+  community.general.zfs:
+    name: zroot/jails
+    state: present
+    extra_zfs_properties:
+      mountpoint: /usr/local/jails
+
+- name: Enable
+  community.general.sysrc:
+    name: "jail_enable"
+    value: "YES"
+
+- name: Create configuration directory for jails
+  community.general.zfs:
+    name: "zroot/jails/{{ item }}"
+    state: present
+  loop:
+    "{{ jails_create.keys() | flatten(levels=1) }}"
+
+- name: Create root directory for jails
+  community.general.zfs:
+    name: "zroot/jails/{{ item }}/root"
+    state: present
+  loop:
+    "{{ jails_create.keys() | flatten(levels=1) }}"
+
+- name: Populate /etc/jail.conf
+  ansible.builtin.template:
+    src: jail.conf
+    dest: /etc/jail.conf
+  notify:
+    - restart jails
+
+- name: Start
+  ansible.builtin.service:
+    name: jail
+    state: started

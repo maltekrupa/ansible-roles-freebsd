@@ -1,0 +1,4 @@
+---
+jails_create: {}
+# TODO: implement remove
+jails_remove: []
