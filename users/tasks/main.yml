@@ -1,13 +1,13 @@
 ---
 - name: Create ops group
-  group:
+  ansible.builtin.group:
     state: present
     name: ops
   tags:
     - users
 
 - name: Create users
-  user:
+  ansible.builtin.user:
     name: "{{ item }}"
     group: ops
     shell: /bin/sh
@@ -17,7 +17,7 @@
     - users
 
 - name: Create .ssh directory
-  file:
+  ansible.builtin.file:
     state: directory
     path: "/home/{{ item }}/.ssh"
     owner: "{{ item }}"
@@ -31,7 +31,7 @@
     - users
 
 - name: Set authorized keys
-  copy:
+  ansible.builtin.copy:
     content: "{{ users_create[item].ssh_keys }}"
     dest: "/home/{{ item }}/.ssh/authorized_keys"
     owner: "{{ item }}"
@@ -45,7 +45,7 @@
     - users
 
 - name: Remove users
-  user:
+  ansible.builtin.user:
     name: "{{ item }}"
     state: absent
   loop:
