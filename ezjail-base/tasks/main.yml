@@ -30,30 +30,3 @@
   ansible.builtin.command:
     cmd: ezjail-admin install -p
     creates: /usr/jails/basejail/usr
-
-- name: Copy ipv6-only flavour
-  ansible.builtin.copy:
-    src: /usr/jails/flavours/example/
-    dest: /usr/jails/flavours/ipv6-only
-    remote_src: yes
-    force: no
-
-- name: NAT64 resolv.conf for ipv6-only jails
-  ansible.builtin.template:
-    src: ipv6-only-resolv.conf
-    dest: /usr/jails/flavours/ipv6-only/etc/resolv.conf
-
-- name: Create jails
-  ansible.builtin.command:
-    cmd: ezjail-admin create -f {{ item.flavour }} {{ item.name }} {{ item.ip_configuration }}
-    creates: /usr/jails/{{ item.name }}
-  loop: "{{ ezjail_create }}"
-  when: ezjail_create is defined
-
-- name: Start jails
-  ansible.builtin.service:
-    name: ezjail
-    args: "{{ item.name }}"
-    state: started
-  loop: "{{ ezjail_create }}"
-  when: ezjail_create is defined
