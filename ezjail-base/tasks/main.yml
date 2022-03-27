@@ -49,3 +49,11 @@
     creates: /usr/jails/{{ item.name }}
   loop: "{{ ezjail_create }}"
   when: ezjail_create is defined
+
+- name: Start jails
+  ansible.builtin.service:
+    name: ezjail
+    args: "{{ item.name }}"
+    state: started
+  loop: "{{ ezjail_create }}"
+  when: ezjail_create is defined

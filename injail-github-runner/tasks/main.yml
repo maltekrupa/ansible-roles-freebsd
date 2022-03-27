@@ -66,9 +66,3 @@
     name: github_runner_enable
     value: "YES"
     path: "{{ github_runner_jail_path }}/etc/rc.conf"
-
-- name: Start jail
-  ansible.builtin.service:
-    name: ezjail
-    args: github-runner
-    state: started
