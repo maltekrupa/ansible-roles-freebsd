@@ -8,5 +8,8 @@
     mode: 0644
   notify:
     - restart sshd
-  tags:
-    - ssh
+
+- name: Remove temporary ssh configuration in rc.conf
+  community.general.sysrc:
+    name: "sshd_flags"
+    state: absent

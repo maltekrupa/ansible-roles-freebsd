@@ -8,8 +8,12 @@ KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
 MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512
 PasswordAuthentication no
 PermitRootLogin prohibit-password
+{% if network_ipv4_address is defined %}
 ListenAddress {{ network_ipv4_address }}
-ListenAddress [{{ network_ipv6_address }}]
+{% endif %}
+{% if network_ipv6_address is defined %}
+ListenAddress {{ network_ipv6_address }}
+{% endif %}
 Port 22
 PrintMotd no
 Protocol 2
