@@ -1,0 +1,15 @@
+---
+- name: Install packages
+  community.general.pkgng:
+    state: present
+    # From https://docs.ansible.com/ansible/latest/collections/community/general/pkgng_module.html
+    # When used with a loop: each package will be processed individually,
+    # it is much more efficient to pass the list directly to the name option.
+    name: "{{ packages_install | join(' ') }}"
+    # Just assume someone updates the cache. This is way too slow on freebsd otherwise
+    cached: yes
+
+- name: Remove packages
+  community.general.pkgng:
+    state: absent
+    name: "{{ packages_remove | join(' ') }}"
