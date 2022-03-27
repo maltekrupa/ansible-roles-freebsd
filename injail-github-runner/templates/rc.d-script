@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# PROVIDE: github-runner
+# REQUIRE: LOGIN
+# KEYWORD: shutdown
+
+# Add the following lines to /etc/rc.conf to enable github runner
+# github_runner_enable="YES"
+
+. /etc/rc.subr
+
+name=github_runner
+rcvar=github_runner_enable
+
+load_rc_config $name
+
+export HOME="{{ github_runner_home }}"
+
+: ${github_runner_enable:="NO"}
+
+pidfile="/var/run/github-runner/${name}.pid"
+
+procname="{{ github_runner_binary_file }}"
+github_runner_chdir="{{ github_runner_home }}"
+command="/usr/sbin/daemon"
+command_args="-p ${pidfile} -t ${name} -u nobody -o {{ github_runner_log_file }} ${procname} run"
+
+run_rc_command "$1"

@@ -1,0 +1,74 @@
+---
+- name: Check if binary already exist
+  ansible.builtin.stat:
+    path: "{{ github_runner_jail_path }}{{ github_runner_binary_file }}"
+    checksum_algorithm: sha256
+  register: binary_file
+
+- name: Create directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: nobody
+    group: nobody
+    mode: 0750
+  loop:
+    - "{{ github_runner_jail_path }}{{ github_runner_home }}"
+    - "{{ github_runner_jail_path }}/var/run/github-runner"
+
+- name: Create rc.d directory
+  ansible.builtin.file:
+    path: "{{ github_runner_jail_path }}/usr/local/etc/rc.d"
+    state: directory
+    owner: root
+    group: wheel
+    mode: 0750
+
+- name: Download
+  ansible.builtin.get_url:
+    url: "https://github.com/ChristopherHX/github-act-runner/releases/download/{{ github_runner_version }}/binary-freebsd-amd64.tar.gz"
+    dest: /tmp/binary-freebsd-amd64.tar.gz
+    checksum: "sha256:{{ github_runner_checksum_archive }}"
+    force: no
+    mode: 0750
+    owner: root
+    group: wheel
+  when: binary_file.stat.checksum is not defined or binary_file.stat.checksum != github_runner_checksum_binary
+
+- name: Extract archive
+  ansible.builtin.command:
+    cmd: tar xvzf -C /tmp /tmp/binary-freebsd-amd64.tar.gz
+    creates: /tmp/github-act-runner
+  when: binary_file.stat.checksum is not defined or binary_file.stat.checksum != github_runner_checksum_binary
+
+- name: "Move binary to {{ github_runner_binary_file }}"
+  ansible.builtin.copy:
+    src: /tmp/github-act-runner
+    dest: "{{ github_runner_jail_path }}{{ github_runner_binary_file }}"
+    remote_src: yes
+    mode: 0750
+    owner: nobody
+    group: nobody
+  when: binary_file.stat.checksum is not defined or binary_file.stat.checksum != github_runner_checksum_binary
+
+- name: rc.d script
+  ansible.builtin.template:
+    src: rc.d-script
+    dest: "{{ github_runner_jail_path }}{{ github_runner_rcd_file }}"
+    mode: 0750
+    owner: root
+    group: wheel
+  notify:
+    - restart github-runner jail
+
+- name: Enable service
+  community.general.sysrc:
+    name: github_runner_enable
+    value: "YES"
+    path: "{{ github_runner_jail_path }}/etc/rc.conf"
+
+- name: Start jail
+  ansible.builtin.service:
+    name: ezjail
+    args: github-runner
+    state: started
