@@ -3,7 +3,6 @@ github_runner_version: v0.2.0
 github_runner_checksum_binary: 9c95e11ec7158f1c378db713e9ee39680f25057feff83adb37ba2aadab5d1980
 github_runner_checksum_archive: 11d343e079b3fc54a7b14d06099fa5f482f01c0683f7cf615b415eaa52a8ad6d
 
-github_runner_jail_path: /usr/jails/github-runner
 github_runner_path_prefix: /usr/local
 github_runner_home: "{{ github_runner_path_prefix }}/github-runner"
 github_runner_binary_file: "{{ github_runner_home }}/github-runner"

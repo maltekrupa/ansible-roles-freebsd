@@ -1,7 +1,7 @@
 ---
 - name: Check if binary already exist
   ansible.builtin.stat:
-    path: "{{ github_runner_jail_path }}{{ github_runner_binary_file }}"
+    path: "{{ github_runner_binary_file }}"
     checksum_algorithm: sha256
   register: binary_file
 
@@ -13,12 +13,12 @@
     group: nobody
     mode: 0750
   loop:
-    - "{{ github_runner_jail_path }}{{ github_runner_home }}"
-    - "{{ github_runner_jail_path }}/var/run/github-runner"
+    - "{{ github_runner_home }}"
+    - "/var/run/github-runner"
 
 - name: Create rc.d directory
   ansible.builtin.file:
-    path: "{{ github_runner_jail_path }}/usr/local/etc/rc.d"
+    path: "/usr/local/etc/rc.d"
     state: directory
     owner: root
     group: wheel
@@ -37,14 +37,14 @@
 
 - name: Extract archive
   ansible.builtin.command:
-    cmd: tar xvzf -C /tmp /tmp/binary-freebsd-amd64.tar.gz
+    cmd: tar -C /tmp -xzf /tmp/binary-freebsd-amd64.tar.gz
     creates: /tmp/github-act-runner
   when: binary_file.stat.checksum is not defined or binary_file.stat.checksum != github_runner_checksum_binary
 
 - name: "Move binary to {{ github_runner_binary_file }}"
   ansible.builtin.copy:
     src: /tmp/github-act-runner
-    dest: "{{ github_runner_jail_path }}{{ github_runner_binary_file }}"
+    dest: "{{ github_runner_binary_file }}"
     remote_src: yes
     mode: 0750
     owner: nobody
@@ -54,15 +54,14 @@
 - name: rc.d script
   ansible.builtin.template:
     src: rc.d-script
-    dest: "{{ github_runner_jail_path }}{{ github_runner_rcd_file }}"
+    dest: "{{ github_runner_rcd_file }}"
     mode: 0750
     owner: root
     group: wheel
   notify:
-    - restart github-runner jail
+    - restart github-runner
 
 - name: Enable service
   community.general.sysrc:
     name: github_runner_enable
     value: "YES"
-    path: "{{ github_runner_jail_path }}/etc/rc.conf"

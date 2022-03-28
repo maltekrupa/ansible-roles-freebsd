@@ -1,7 +1,0 @@
----
-
-- name: restart github-runner jail
-  ansible.builtin.service:
-    name: ezjail
-    args: github-runner
-    state: restarted
