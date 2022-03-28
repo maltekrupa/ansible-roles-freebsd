@@ -12,7 +12,7 @@ PermitRootLogin prohibit-password
 ListenAddress {{ network_ipv4_address }}
 {% endif %}
 {% if network_ipv6_address is defined %}
-ListenAddress {{ network_ipv6_address }}
+ListenAddress [{{ network_ipv6_address }}]
 {% endif %}
 Port 22
 PrintMotd no
