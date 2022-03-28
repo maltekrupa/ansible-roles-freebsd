@@ -1,0 +1,17 @@
+---
+
+- name: Configure
+  ansible.builtin.template:
+    src: pf.conf
+    dest: /etc/pf.conf
+  notify: restart pf
+
+- name: Enable service
+  community.general.sysrc:
+    name: pf_enable
+    value: "YES"
+
+- name: Start service
+  ansible.builtin.service:
+    name: pf
+    state: started

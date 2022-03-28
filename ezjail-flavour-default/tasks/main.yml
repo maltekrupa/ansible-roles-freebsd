@@ -1,0 +1,34 @@
+---
+
+- name: Create flavour
+  ansible.builtin.copy:
+    src: /usr/jails/flavours/example/
+    dest: /usr/jails/flavours/default
+    remote_src: yes
+    force: no
+
+- name: Copy authorized_keys
+  ansible.builtin.copy:
+    src: /root/.ssh
+    dest: /usr/jails/flavours/default/root
+    remote_src: yes
+    force: no
+
+- name: Enable sshd
+  community.general.sysrc:
+    name: "sshd_enable"
+    value: "YES"
+    path: /usr/jails/flavours/default/etc/rc.conf
+
+- name: Allow root login via ssh
+  community.general.sysrc:
+    name: "sshd_flags"
+    value: "-o PermitRootLogin=prohibit-password"
+    path: /usr/jails/flavours/default/etc/rc.conf
+
+- name: Copy resolv.conf
+  ansible.builtin.copy:
+    src: /etc/resolv.conf
+    dest: /usr/jails/flavours/default/etc/resolv.conf
+    remote_src: yes
+    force: no
