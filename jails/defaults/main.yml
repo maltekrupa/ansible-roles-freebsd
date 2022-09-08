@@ -1,4 +1,5 @@
 ---
+jails_network_interface: "lo0"
 jails_create: {}
 # TODO: implement remove
 jails_remove: []
