@@ -1,5 +1,5 @@
 ---
-- name: Create jails dataset
+- name: Create dataset
   community.general.zfs:
     name: zroot/jails
     state: present
@@ -11,14 +11,14 @@
     name: "jail_enable"
     value: "YES"
 
-- name: Create configuration directory for jails
+- name: Create configuration directory
   community.general.zfs:
     name: "zroot/jails/{{ item }}"
     state: present
   loop:
     "{{ jails_create.keys() | flatten(levels=1) }}"
 
-- name: Create root directory for jails
+- name: Create root directory
   community.general.zfs:
     name: "zroot/jails/{{ item }}/root"
     state: present
