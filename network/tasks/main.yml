@@ -4,16 +4,15 @@
     name: "ifconfig_{{ network_interface }}"
     value: "inet {{ network_ipv4_address }} netmask {{ network_ipv4_netmask }}"
 
-- name: Configure static route interfaces
-  community.general.sysrc:
-    name: "static_routes"
-    value: "{{ network_interface }}"
-  when: network_ipv4_needs_static_route
-
 - name: Configure static IPv4 route
   community.general.sysrc:
     name: "route_{{ network_interface }}"
     value: "{{ network_ipv4_gateway }} -iface {{ network_interface }}"
+  when: network_ipv4_needs_static_route
+
+- name: Add static IPv4 route to configuration
+  ansible.builtin.set_fact:
+    network_static_routes: "{{ network_static_routes + [network_interface] }}"
   when: network_ipv4_needs_static_route
 
 - name: Configure IPv4 default gateway
@@ -30,6 +29,41 @@
   community.general.sysrc:
     name: "ipv6_defaultrouter"
     value: "{{ network_ipv6_gateway }}%{{ network_interface }}"
+
+- name: Configure VLANs
+  community.general.sysrc:
+    name: "vlans_{{ network_interface }}"
+    value: "{{ item }}"
+  loop:
+    "{{ network_vlans_create.keys() | flatten(levels=1) }}"
+
+- name: Configure VLAN settings
+  community.general.sysrc:
+    name: "ifconfig_{{ network_interface }}_{{ item }}"
+    value: "inet {{ network_vlans_create[item].ipv4 }} mtu {{ network_vlans_create[item].mtu | default('1500') }}"
+  loop:
+    "{{ network_vlans_create.keys() | flatten(levels=1) }}"
+
+- name: Configure VLAN routes
+  community.general.sysrc:
+    name: "route_{{ network_interface }}_{{ item }}"
+    value: "-net {{ network_vlans_create[item].network }} {{ network_vlans_create[item].gateway }}"
+  loop:
+    "{{ network_vlans_create.keys() | flatten(levels=1) }}"
+
+- name: Add static VLAN route to configuration
+  ansible.builtin.set_fact:
+    # yes, nice, string interpolation in ansible
+    # tilde concats strings and converts ints to strings
+    network_static_routes: "{{ network_static_routes + [network_interface ~ '_' ~ item] }}"
+  loop:
+    "{{ network_vlans_create.keys() | flatten(levels=1) }}"
+
+- name: Configure static routes that should be applied
+  community.general.sysrc:
+    name: "static_routes"
+    value: "{{ network_static_routes | join(' ') }}"
+  when: network_static_routes | length > 0
 
 - name: Populate /etc/resolv.conf
   ansible.builtin.template:
