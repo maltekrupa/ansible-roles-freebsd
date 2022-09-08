@@ -1,0 +1,12 @@
+Defaults      env_reset
+Defaults      env_keep+=HOME
+Defaults      env_keep+=SSH_CLIENT
+Defaults      env_keep+=SSH_CONNECTION
+Defaults      env_keep+=SSH_TTY
+Defaults      env_keep+=SSH_AUTH_SOCK
+Defaults      secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+# User privilege specification
+root          ALL=(ALL) ALL
+
+#includedir /usr/local/etc/sudoers.d
