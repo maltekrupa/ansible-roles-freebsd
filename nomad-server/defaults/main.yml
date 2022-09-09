@@ -5,3 +5,4 @@ nomad_config_directory: /usr/local/etc/nomad
 nomad_rc_file: /usr/local/etc/rc.d/nomad
 nomad_zfs_pool: zroot
 nomad_data_directory: /var/db/nomad/data
+nomad_server_join_address: ""
