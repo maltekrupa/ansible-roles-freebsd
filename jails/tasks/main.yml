@@ -11,32 +11,17 @@
     name: "jail_enable"
     value: "YES"
 
-- name: Create configuration directory
-  community.general.zfs:
-    name: "zroot/jails/{{ item }}"
-    state: present
-  loop:
-    "{{ jails_create.keys() | flatten(levels=1) }}"
+- name: Include tasks to build template jail
+  ansible.builtin.include_tasks:
+    file: build_template.yml
 
-- name: Create root directory
-  community.general.zfs:
-    name: "zroot/jails/{{ item }}/root"
-    state: present
-  loop:
-    "{{ jails_create.keys() | flatten(levels=1) }}"
+- name: Include tasks to provision jails
+  ansible.builtin.include_tasks:
+    file: provision_jails.yml
 
-- name: Download base.txz
-  ansible.builtin.get_url:
-    url: ftp://ftp.freebsd.org/pub/FreeBSD/releases/amd64/amd64/13.1-RELEASE/base.txz
-    dest: /tmp/base.txz
-    checksum: sha256:565baf7cf520cedfa01c5260f6a614b71c5e2b37ba3ee22e1342906548aa24ad
-
-- name: Extract base.txz to jails
-  ansible.builtin.command: "tar -xvf /tmp/base.txz -C /usr/local/jails/{{ item }}/root"
-  args:
-    creates: "/usr/local/jails/{{ item }}/root/etc/passwd"
-  loop:
-    "{{ jails_create.keys() | flatten(levels=1) }}"
+- name: Include tasks to remove jails
+  ansible.builtin.include_tasks:
+    file: remove_jails.yml
 
 - name: Populate configuration file
   ansible.builtin.template:

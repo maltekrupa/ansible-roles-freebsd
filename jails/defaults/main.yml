@@ -1,4 +1,12 @@
 ---
+jails_version: 13.1-RELEASE
 jails_create: {}
-# TODO: implement remove
+# Example
+# jails_create:
+#   test1:
+#     ipv6_address: <ipv6>
+#     ipv4_address: <ipv4>
 jails_remove: []
+# Example
+# jails_remove:
+#   - test2

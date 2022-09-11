@@ -1,0 +1,56 @@
+---
+
+- name: Stop jails that should be removed
+  ansible.builtin.service:
+    name: "jail {{ item }}"
+    state: stopped
+  loop:
+    "{{ jails_remove }}"
+
+- name: Check if root directory exists
+  stat:
+    path: "/usr/local/jails/{{ item }}/root"
+  register: root_dir
+  loop:
+    "{{ jails_remove }}"
+
+- name: Unmount root filesystem
+  ansible.builtin.command:
+    cmd: "zfs unmount -f zroot/jails/{{ item.item }}/root"
+  loop:
+    "{{ root_dir.results }}"
+  when:
+    - item is not skipped
+    - item.stat.exists
+  ignore_errors: yes
+
+- name: Check if configuration directory exists
+  stat:
+    path: "/usr/local/jails/{{ item }}"
+  register: config_dir
+  loop:
+    "{{ jails_remove }}"
+
+- name: Unmount configuration filesystem
+  ansible.builtin.command:
+    cmd: "zfs unmount -f zroot/jails/{{ item.item }}"
+  loop:
+    "{{ config_dir.results }}"
+  when:
+    - item is not skipped
+    - item.stat.exists
+  ignore_errors: yes
+
+- name: Remove root filesystem
+  community.general.zfs:
+    name: "zroot/jails/{{ item }}/root"
+    state: absent
+  loop:
+    "{{ jails_remove }}"
+
+- name: Remove config filesystem
+  community.general.zfs:
+    name: "zroot/jails/{{ item }}"
+    state: absent
+  loop:
+    "{{ jails_remove }}"
