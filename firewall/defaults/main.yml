@@ -1,2 +1,3 @@
 ---
-firewall_rules: {}
+firewall_pass_rules: {}
+firewall_rdr_rules: {}
