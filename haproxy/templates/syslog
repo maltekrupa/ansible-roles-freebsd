@@ -1,0 +1,6 @@
+# Collect log with UDP
+$ModLoad imudp
+$UDPServerAddress {{ network_ipv4_address }}
+$UDPServerRun 514
+
+local0.* /var/log/haproxy.log

@@ -1,52 +1,34 @@
 ---
-- name: Add HAProxy repo.
-  ansible.builtin.apt_repository:
-    repo: ppa:vbernat/haproxy-2.4
-
-- name: Ensure HAProxy is installed.
-  ansible.builtin.apt:
-    name: "{{ item }}"
-    state: present
-    update_cache: yes
-    cache_valid_time: 3600
-  loop:
-    - haproxy=2.4.*
-    - ssl-cert
-
-- name: Add HAProxy user to ssl-cert group
-  ansible.builtin.user:
+- name: Install
+  community.general.pkgng:
     name: haproxy
-    groups: ssl-cert
-    append: yes
+    state: present
 
-# This should be in the certbot role, but it is so big that I didn't want to
-# touch it.
-- name: Copy custom script to generate HAProxy compatible certificate files.
+- name: Create syslog configuration file
   ansible.builtin.template:
-    src: certbot-post-run-hook
-    dest: /usr/local/bin/certbot-post-run-hook
-    mode: 0750
-    owner: root
-    group: root
+    src: syslog
+    dest: /usr/local/etc/syslog.d/haproxy.conf
+    mode: 0644
 
-- name: Create cronjob to run the custom certificate script.
-  ansible.builtin.cron:
-    name: "haproxy compliant certificates"
-    minute: "40"
-    hour: "3"
-    job: "/usr/local/bin/certbot-post-run-hook"
-    user: root
+- name: Configure syslog to allow remote logs
+  community.general.sysrc:
+    name: syslogd_flags
+    value: ""
 
-- name: Copy HAProxy configuration in place.
+- name: Create haproxy configuration file
   ansible.builtin.template:
     src: haproxy.cfg.j2
-    dest: /etc/haproxy/haproxy.cfg
+    dest: /usr/local/etc/haproxy.conf
     mode: 0644
     validate: haproxy -f %s -c -q
   notify: restart haproxy
 
-- name: Ensure HAProxy is started and enabled on boot.
-  ansible.builtin.systemd:
+- name: Enable service
+  community.general.sysrc:
+    name: haproxy_enable
+    value: "YES"
+
+- name: Start service
+  ansible.builtin.service:
     name: haproxy
     state: started
-    enabled: yes

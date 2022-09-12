@@ -1,11 +1,10 @@
 global
-  log /dev/log  local0
-  log /dev/log  local1 notice
-  chroot /var/lib/haproxy
-  stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd listeners
+  log {{ network_ipv4_address }}:514 local0
+  chroot /var/empty
+  user www
+  group www
+  stats socket /var/run/haproxy.stat mode 600 level admin expose-fd listeners
   stats timeout 30s
-  user haproxy
-  group haproxy
   daemon
 
   # modern configuration
@@ -27,13 +26,13 @@ defaults
   timeout connect {{ haproxy_connect_timeout }}
   timeout client {{ haproxy_client_timeout }}
   timeout server {{ haproxy_server_timeout }}
-  errorfile 400 /etc/haproxy/errors/400.http
-  errorfile 403 /etc/haproxy/errors/403.http
-  errorfile 408 /etc/haproxy/errors/408.http
-  errorfile 500 /etc/haproxy/errors/500.http
-  errorfile 502 /etc/haproxy/errors/502.http
-  errorfile 503 /etc/haproxy/errors/503.http
-  errorfile 504 /etc/haproxy/errors/504.http
+  errorfile 400 /usr/local/share/examples/haproxy/errorfiles/400.http
+  errorfile 403 /usr/local/share/examples/haproxy/errorfiles/403.http
+  errorfile 408 /usr/local/share/examples/haproxy/errorfiles/408.http
+  errorfile 500 /usr/local/share/examples/haproxy/errorfiles/500.http
+  errorfile 502 /usr/local/share/examples/haproxy/errorfiles/502.http
+  errorfile 503 /usr/local/share/examples/haproxy/errorfiles/503.http
+  errorfile 504 /usr/local/share/examples/haproxy/errorfiles/504.http
 
 frontend stats
     bind localhost:8404
@@ -43,9 +42,8 @@ frontend stats
     stats admin if LOCALHOST
 
 frontend incoming
-    mode     http
-    bind     :::80 v4v6
-    bind     :::443 v4v6 ssl crt /etc/ssl/private alpn h2,http/1.1
+    bind     :::8080 v4v6
+    # bind     :::8443 v4v6 ssl crt /etc/ssl/private alpn h2,http/1.1
     redirect scheme https code 301 if !{ ssl_fc }
     http-response set-header Strict-Transport-Security max-age=63072000
     default_backend no-match
