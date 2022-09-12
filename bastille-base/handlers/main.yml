@@ -1,3 +1,0 @@
----
-- name: restart pf
-  ansible.builtin.command: pfctl -f /etc/pf.conf
