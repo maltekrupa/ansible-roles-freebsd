@@ -11,6 +11,13 @@
     name: "jail_enable"
     value: "YES"
 
+- name: Fix IPv6 issue
+  # Services in jails cannot bind to IPv6 addresses on boot for some reason
+  # https://forums.freebsd.org/threads/52096/
+  ansible.posix.sysctl:
+    name: net.inet6.ip6.dad_count
+    value: '0'
+
 - name: Include tasks to build template jail
   ansible.builtin.include_tasks:
     file: build_template.yml
