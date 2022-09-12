@@ -60,6 +60,12 @@
     state: present
     chroot: "/usr/local/jails/{{ jails_version }}/root"
 
+- name: Create syslog directory
+  ansible.builtin.file:
+    path: /usr/local/jails/{{ jails_version }}/root/usr/local/etc/syslog.d
+    state: directory
+    mode: 0755
+
 - name: Create zfs snapshot
   community.general.zfs:
     name: zroot/jails/{{ jails_version }}/root@template
