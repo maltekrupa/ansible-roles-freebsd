@@ -34,8 +34,6 @@
   ansible.builtin.template:
     src: jail.conf
     dest: /etc/jail.conf
-  notify:
-    - restart jails
 
 - name: Start
   ansible.builtin.service:
