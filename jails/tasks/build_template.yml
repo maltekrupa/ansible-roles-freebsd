@@ -54,6 +54,12 @@
     mode: '0700'
     remote_src: yes
 
+- name: Install python
+  community.general.pkgng:
+    name: python
+    state: present
+    chroot: "/usr/local/jails/{{ jails_version }}/root"
+
 - name: Create zfs snapshot
   community.general.zfs:
     name: zroot/jails/{{ jails_version }}/root@template
