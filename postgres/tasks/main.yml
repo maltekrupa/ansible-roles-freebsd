@@ -1,0 +1,22 @@
+---
+
+- name: Install
+  community.general.pkgng:
+    name: postgresql15-server
+    state: present
+
+- name: Configure pg_hba.conf
+  ansible.builtin.template:
+    src: pg_hba.conf.j2
+    dest: /var/db/postgres/data15/pg_hba.conf
+    mode: 0600
+
+- name: Enable
+  community.general.sysrc:
+    name: postgresql_enable
+    value: "YES"
+
+- name: Start
+  ansible.builtin.service:
+    name: postgresql
+    state: started
