@@ -1,0 +1,43 @@
+---
+
+lychee_version: 4.6.0
+
+lychee_port: 8080
+lychee_domain: ""
+lychee_app_key: ""
+
+lychee_psql_host: ""
+lychee_psql_username: ""
+lychee_psql_password: ""
+lychee_psql_database: ""
+
+lychee_document_root: /usr/local/www/Lychee/public
+lychee_php_fpm_socket: /var/run/php8.1-fpm.sock
+
+lychee_dependencies:
+  - nginx
+  - php81
+  - php81-bcmath
+  - php81-ctype
+  - php81-dom
+  - php81-dom
+  - php81-exif
+  - php81-extensions
+  - php81-fileinfo
+  - php81-filter
+  - php81-gd
+  - php81-pecl-imagick
+  - php81-xml
+  - php81-mbstring
+  - php81-pdo
+  - php81-phar
+  - php81-simplexml
+  - php81-tokenizer
+  - php81-xml
+  - php81-xmlwriter
+  - php81-session
+  - php81-zlib
+  - php81-pgsql
+  - php81-pdo_pgsql
+  - ffmpeg
+  - p5-Image-ExifTool

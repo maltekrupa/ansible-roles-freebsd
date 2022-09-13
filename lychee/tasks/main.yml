@@ -1,0 +1,69 @@
+---
+
+- name: Install dependencies
+  community.general.pkgng:
+    name: "{{ lychee_dependencies | join(' ') }}"
+    state: present
+
+- name: Configure nginx.conf
+  ansible.builtin.template:
+    src: nginx.conf.j2
+    dest: /usr/local/etc/nginx/nginx.conf
+    owner: root
+    group: wheel
+    mode: 0644
+  notify: restart nginx
+
+- name: Configure www.conf
+  ansible.builtin.template:
+    src: www.conf.j2
+    dest: /usr/local/etc/php-fpm.d/www.conf
+    owner: root
+    group: wheel
+    mode: 0644
+
+- name: Create document root directory
+  ansible.builtin.file:
+    path: "{{ lychee_document_root }}"
+    owner: www
+    group: www
+    state: directory
+
+- name: Download release
+  ansible.builtin.get_url:
+    url: "https://github.com/LycheeOrg/Lychee/releases/download/v{{ lychee_version }}/Lychee.zip"
+    dest: /tmp/lychee.zip
+    checksum: sha256:a446f77d4131fbb510970beeb568518169dee59b7cc7eb9d876fef58909fbcb0
+
+- name: Extract release
+  ansible.builtin.command:
+    cmd: "unzip -d /usr/local/www /tmp/lychee.zip"
+    creates: "{{ lychee_document_root }}/index.php"
+
+- name: Configure lychee via .env
+  ansible.builtin.template:
+    src: env.j2
+    dest: /usr/local/www/Lychee/.env
+    owner: www
+    group: www
+    mode: 0644
+
+- name: Enable php-fpm
+  community.general.sysrc:
+    name: php_fpm_enable
+    value: "YES"
+
+- name: Start php-fpm
+  ansible.builtin.service:
+    name: php-fpm
+    state: started
+
+- name: Enable nginx
+  community.general.sysrc:
+    name: nginx_enable
+    value: "YES"
+
+- name: Start nginx
+  ansible.builtin.service:
+    name: nginx
+    state: started
