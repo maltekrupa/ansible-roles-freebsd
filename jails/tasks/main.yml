@@ -39,3 +39,6 @@
   ansible.builtin.service:
     name: jail
     state: started
+    args: "{{ item }}"
+  loop:
+    "{{ jails_create.keys() | flatten(levels=1) }}"

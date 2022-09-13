@@ -2,8 +2,9 @@
 
 - name: Stop jails that should be removed
   ansible.builtin.service:
-    name: "jail {{ item }}"
+    name: jail
     state: stopped
+    args: "{{ item }}"
   loop:
     "{{ jails_remove }}"
 
