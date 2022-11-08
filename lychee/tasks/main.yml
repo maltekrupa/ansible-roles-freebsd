@@ -33,11 +33,11 @@
   ansible.builtin.get_url:
     url: "https://github.com/LycheeOrg/Lychee/releases/download/v{{ lychee_version }}/Lychee.zip"
     dest: /tmp/lychee.zip
-    checksum: sha256:a446f77d4131fbb510970beeb568518169dee59b7cc7eb9d876fef58909fbcb0
+    checksum: sha256:84352d34ec068d90ddbdb7f2235d1b94b2a1b0e4b925db6479ddcf21286a51a9
 
 - name: Extract release
   ansible.builtin.command:
-    cmd: "unzip -d /usr/local/www /tmp/lychee.zip"
+    cmd: "unzip -o -d /usr/local/www /tmp/lychee.zip"
     creates: "{{ lychee_document_root }}/index.php"
 
 - name: Configure lychee via .env
