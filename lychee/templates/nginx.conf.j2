@@ -32,6 +32,7 @@ http {
     fastcgi_send_timeout 3600;
 
     gzip  on;
+    gzip_types *;
 
     server {
         root {{ lychee_document_root }};
