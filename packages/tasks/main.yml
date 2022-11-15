@@ -3,7 +3,7 @@
 - name: Make sure pkg is setup
   ansible.builtin.command:
     cmd: pkg -y
-  ignore_errors: yes
+  ignore_errors: true
 
 - name: Install packages
   community.general.pkgng:
@@ -13,7 +13,7 @@
     # it is much more efficient to pass the list directly to the name option.
     name: "{{ packages_install | join(' ') }}"
     # Just assume someone updates the cache. This is way too slow on freebsd otherwise
-    cached: yes
+    cached: false
   when: packages_install != []
 
 - name: Remove packages
