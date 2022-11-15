@@ -1,7 +1,7 @@
 ---
-github_runner_version: v0.2.0
-github_runner_checksum_binary: 9c95e11ec7158f1c378db713e9ee39680f25057feff83adb37ba2aadab5d1980
-github_runner_checksum_archive: 11d343e079b3fc54a7b14d06099fa5f482f01c0683f7cf615b415eaa52a8ad6d
+github_runner_version: v0.4.0
+github_runner_checksum_binary: 957168909a0343db9c244b58328f19a44f109541f52f5720d65b317431f07265
+github_runner_checksum_archive: a08cc7f8da3a2dbeddd0ed2c3aff0344e367e1f51a5b93fb91a30c3190834ebe
 
 github_runner_path_prefix: /usr/local
 github_runner_home: "{{ github_runner_path_prefix }}/github-runner"
