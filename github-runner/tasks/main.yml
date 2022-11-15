@@ -29,7 +29,7 @@
     url: "https://github.com/ChristopherHX/github-act-runner/releases/download/{{ github_runner_version }}/binary-freebsd-amd64.tar.gz"
     dest: /tmp/binary-freebsd-amd64.tar.gz
     checksum: "sha256:{{ github_runner_checksum_archive }}"
-    force: no
+    force: false
     mode: 0750
     owner: root
     group: wheel
@@ -45,7 +45,7 @@
   ansible.builtin.copy:
     src: /tmp/github-act-runner
     dest: "{{ github_runner_binary_file }}"
-    remote_src: yes
+    remote_src: true
     mode: 0750
     owner: nobody
     group: nobody
