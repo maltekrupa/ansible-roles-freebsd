@@ -1,4 +1,10 @@
 ---
+
+- name: Install dependencies
+  community.general.pkgng:
+    state: present
+    name: "{{ github_runner_dependencies | join(' ') }}"
+
 - name: Check if binary already exist
   ansible.builtin.stat:
     path: "{{ github_runner_binary_file }}"

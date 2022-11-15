@@ -8,3 +8,7 @@ github_runner_home: "{{ github_runner_path_prefix }}/github-runner"
 github_runner_binary_file: "{{ github_runner_home }}/github-runner"
 github_runner_rcd_file: "{{ github_runner_path_prefix }}/etc/rc.d/github_runner"
 github_runner_log_file: "/var/log/github_runner.log"
+
+github_runner_dependencies:
+  - node
+  - bash
