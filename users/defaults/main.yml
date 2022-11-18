@@ -1,3 +1,9 @@
 ---
 users_remove: []
 users_create: {}
+# Example
+# users_create:
+#   username:
+#     ssh_keys: |
+#       ssh-ed25519 asdf1234
+#     group: groupname

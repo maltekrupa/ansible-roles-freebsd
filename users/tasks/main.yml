@@ -1,15 +1,17 @@
 ---
-- name: Create ops group
+- name: Create group
   ansible.builtin.group:
     state: present
-    name: ops
+    name: "{{ users_create[item].group | default('ops') }}"
+  loop:
+    "{{ users_create.keys()|flatten(levels=1) }}"
   tags:
     - users
 
 - name: Create users
   ansible.builtin.user:
     name: "{{ item }}"
-    group: ops
+    group: "{{ users_create[item].group | default('ops') }}"
     shell: /bin/sh
   loop:
     "{{ users_create.keys()|flatten(levels=1) }}"
@@ -21,7 +23,7 @@
     state: directory
     path: "/home/{{ item }}/.ssh"
     owner: "{{ item }}"
-    group: ops
+    group: "{{ users_create[item].group | default('ops') }}"
     mode: 0700
   loop:
     "{{ users_create.keys()|flatten(levels=1) }}"
@@ -35,7 +37,7 @@
     content: "{{ users_create[item].ssh_keys }}"
     dest: "/home/{{ item }}/.ssh/authorized_keys"
     owner: "{{ item }}"
-    group: ops
+    group: "{{ users_create[item].group | default('ops') }}"
     mode: 0600
   loop:
     "{{ users_create.keys()|flatten(levels=1) }}"
@@ -49,6 +51,6 @@
     name: "{{ item }}"
     state: absent
   loop:
-   "{{ users_remove }}"
+    "{{ users_remove }}"
   tags:
     - users
