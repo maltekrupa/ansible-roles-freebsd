@@ -30,6 +30,33 @@
     group: wheel
     mode: 0750
 
+- name: Create .ssh directory
+  ansible.builtin.file:
+    path: "{{ github_runner_home }}/.ssh"
+    state: directory
+    owner: nobody
+    group: nobody
+    mode: 0700
+  when: github_runner_ssh_key_deploy
+
+- name: Create private SSH key
+  ansible.builtin.copy:
+    dest: "{{ github_runner_home }}/.ssh/id_ed25519"
+    content: "{{ github_runner_ssh_key + '\n' }}"
+    owner: nobody
+    group: nobody
+    mode: 0600
+  when: github_runner_ssh_key_deploy
+
+- name: Create SSH config
+  ansible.builtin.template:
+    dest: "{{ github_runner_home }}/.ssh/config"
+    src: ssh_config
+    owner: nobody
+    group: nobody
+    mode: 0600
+  when: github_runner_ssh_key_deploy
+
 - name: Download
   ansible.builtin.get_url:
     url: "https://github.com/ChristopherHX/github-act-runner/releases/download/{{ github_runner_version }}/binary-freebsd-amd64.tar.gz"
