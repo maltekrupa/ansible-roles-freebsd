@@ -7,3 +7,4 @@ users_create: {}
 #     ssh_keys: |
 #       ssh-ed25519 asdf1234
 #     group: groupname
+#     home: /home/username

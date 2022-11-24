@@ -12,6 +12,7 @@
   ansible.builtin.user:
     name: "{{ item }}"
     group: "{{ users_create[item].group | default('ops') }}"
+    home: "{{ users_create[item].home | default('/home/' + item) }}"
     shell: /bin/sh
   loop:
     "{{ users_create.keys()|flatten(levels=1) }}"
@@ -21,7 +22,7 @@
 - name: Create .ssh directory
   ansible.builtin.file:
     state: directory
-    path: "/home/{{ item }}/.ssh"
+    path: "{{ users_create[item].home | default('/home/' + item) }}/.ssh"
     owner: "{{ item }}"
     group: "{{ users_create[item].group | default('ops') }}"
     mode: 0700
@@ -35,7 +36,7 @@
 - name: Set authorized keys
   ansible.builtin.copy:
     content: "{{ users_create[item].ssh_keys }}"
-    dest: "/home/{{ item }}/.ssh/authorized_keys"
+    dest: "{{ users_create[item].home | default('/home/' + item) }}/.ssh/authorized_keys"
     owner: "{{ item }}"
     group: "{{ users_create[item].group | default('ops') }}"
     mode: 0600
