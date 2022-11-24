@@ -1,0 +1,64 @@
+---
+
+- name: Install dependencies
+  community.general.pkgng:
+    state: present
+    name: "{{ generic_service_dependencies | join(' ') }}"
+  when: generic_service_dependencies != []
+
+- name: Create content directory
+  ansible.builtin.file:
+    path: "{{ generic_service_content_directory }}"
+    state: directory
+    owner: "{{ generic_service_user }}"
+    group: "{{ generic_service_group }}"
+    mode: 0750
+
+- name: Create pidfile directory
+  ansible.builtin.file:
+    path: "{{ generic_service_pidfile_directory }}"
+    state: directory
+    owner: "{{ generic_service_user }}"
+    group: "{{ generic_service_group }}"
+    mode: 0750
+
+- name: Create rc.d directory
+  ansible.builtin.file:
+    path: "/usr/local/etc/rc.d"
+    state: directory
+    owner: root
+    group: wheel
+    mode: 0750
+
+- name: Create rc.conf.d directory
+  ansible.builtin.file:
+    path: "/usr/local/etc/rc.conf.d"
+    state: directory
+    owner: root
+    group: wheel
+    mode: 0750
+
+- name: rc.d script
+  ansible.builtin.template:
+    src: rc.d-script
+    dest: "{{ generic_service_rcd_file }}"
+    mode: 0750
+    owner: root
+    group: wheel
+  notify:
+    - restart service
+
+- name: rc.conf.d script
+  ansible.builtin.template:
+    src: rc.conf.d-environment-variables
+    dest: "{{ generic_service_rcconfd_file }}"
+    mode: 0700
+    owner: root
+    group: wheel
+  notify:
+    - restart service
+
+- name: Enable service
+  community.general.sysrc:
+    name: "{{ generic_service_name }}_enable"
+    value: "YES"
