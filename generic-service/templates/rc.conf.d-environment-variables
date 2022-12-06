@@ -1,3 +1,3 @@
 {% for i in generic_service_environment_variables %}
-  export {{ i }}
+export {{ i }}
 {% endfor %}
