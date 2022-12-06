@@ -1,6 +1,7 @@
 ---
 
-lychee_version: 4.6.1
+lychee_version: 4.6.2
+lychee_checksum: sha256:226a00c746d6c6f139a94d74e09fdaecff7c4ffeb974d88557a1794cde8f6f5f
 
 lychee_port: 8080
 lychee_domain: ""
