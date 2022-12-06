@@ -34,7 +34,7 @@
 - name: Create newsyslog configuration
   ansible.builtin.template:
     src: newsyslog
-    dest: /usr/local/etc/newsyslog.conf.d/nginx.conf
+    dest: /usr/local/etc/newsyslog.conf.d/lychee.conf
     mode: 0644
 
 - name: Create document root directory
