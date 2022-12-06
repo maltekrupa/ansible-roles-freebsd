@@ -1,0 +1,6 @@
+# haproxy configuration file for newsyslog.conf
+# see newsyslog.conf(5) for details
+#
+# logfilename         [owner:group]   mode count size when  flags [/pid_file]
+# [sig_num]
+/var/log/haproxy.log  root:wheel       600  20    *    @T00   BC

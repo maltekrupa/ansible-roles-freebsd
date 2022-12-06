@@ -4,7 +4,7 @@
     name: haproxy
     state: present
 
-- name: Create syslog configuration file
+- name: Create syslog configuration
   ansible.builtin.template:
     src: syslog
     dest: /usr/local/etc/syslog.d/haproxy.conf
@@ -15,7 +15,22 @@
     name: syslogd_flags
     value: ""
 
-- name: Create haproxy configuration file
+# This is too generic and should probably be somewhere else
+- name: Create directory newsyslog
+  ansible.builtin.file:
+    path: /usr/local/etc/newsyslog.conf.d
+    state: directory
+    owner: root
+    group: wheel
+    mode: 0644
+
+- name: Create newsyslog configuration
+  ansible.builtin.template:
+    src: newsyslog
+    dest: /usr/local/etc/newsyslog.conf.d/haproxy.conf
+    mode: 0644
+
+- name: Create haproxy configuration
   ansible.builtin.template:
     src: haproxy.cfg.j2
     dest: /usr/local/etc/haproxy.conf
