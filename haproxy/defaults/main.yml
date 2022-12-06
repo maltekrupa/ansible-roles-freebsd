@@ -4,6 +4,8 @@ haproxy_backend_mode: 'http'
 haproxy_backend_balance_method: 'roundrobin'
 haproxy_backend_httpchk: 'HEAD / HTTP/1.1\r\nHost:localhost'
 
+haproxy_cert_dir: /usr/local/etc/ssl/acme.sh
+
 haproxy_servers: []
 # - name: app1
 #   fqdn: web1.example.com

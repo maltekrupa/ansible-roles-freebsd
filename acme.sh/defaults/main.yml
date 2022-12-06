@@ -1,0 +1,6 @@
+---
+acmesh_email: ""
+acmesh_dnsimple_token: ""
+
+acmesh_certhome: "/var/db/acme/certs"
+acmesh_logfile: "/var/log/acme.sh.log"

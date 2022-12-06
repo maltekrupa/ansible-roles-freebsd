@@ -43,7 +43,7 @@ frontend stats
 
 frontend incoming
     bind     :::8080 v4v6
-    bind     :::8443 v4v6 ssl crt /usr/local/etc/ssl alpn h2,http/1.1
+    bind     :::8443 v4v6 ssl crt {{ haproxy_cert_dir }} alpn h2,http/1.1
     redirect scheme https code 301 if !{ ssl_fc }
     http-response set-header Strict-Transport-Security max-age=63072000
     default_backend no-match
