@@ -39,6 +39,7 @@ http {
         listen       {{ lychee_port }};
         server_name  {{ lychee_domain }};
         client_max_body_size 100M;
+        server_tokens off;
 
         # serve static files directly
         location ~* \.(jpg|jpeg|gif|css|png|js|ico|html)$ {
@@ -68,6 +69,8 @@ http {
         # Serve /index.php through PHP
         location = /index.php {
             fastcgi_split_path_info ^(.+?\.php)(/.*)$;
+
+            fastcgi_hide_header x-powered-by;
 
             try_files $uri $document_root$fastcgi_script_name =404;
 
