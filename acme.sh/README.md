@@ -18,3 +18,9 @@ Things you need to do manually:
 ```
 # sudo -Hu acme -g acme acme.sh --issue -d <domain> --dns dns_dnsimple -k ec-256
 ```
+
+### Run deploy-hook for haproxy
+
+```
+# sudo -Hu acme -g acme acme.sh --deploy -d <domain> --deploy-hook haproxy --ecc
+```
