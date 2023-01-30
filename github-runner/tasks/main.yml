@@ -67,6 +67,13 @@
     owner: root
     group: wheel
   when: binary_file.stat.checksum is not defined or binary_file.stat.checksum != github_runner_checksum_binary
+  register: download
+
+- name: Remove target if a new version is downloaded
+  ansible.builtin.file:
+    path: /tmp/github-act-runner
+    state: absent
+  when: download.changed
 
 - name: Extract archive
   ansible.builtin.command:
@@ -83,6 +90,8 @@
     owner: nobody
     group: nobody
   when: binary_file.stat.checksum is not defined or binary_file.stat.checksum != github_runner_checksum_binary
+  notify:
+    - restart github-runner
 
 - name: rc.d script
   ansible.builtin.template:
