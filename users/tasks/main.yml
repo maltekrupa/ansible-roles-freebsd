@@ -1,4 +1,11 @@
 ---
+- name: Install zsh
+  community.general.pkgng:
+    state: present
+    name: zsh
+  tags:
+    - users
+
 - name: Create group
   ansible.builtin.group:
     state: present
@@ -13,7 +20,18 @@
     name: "{{ item }}"
     group: "{{ users_create[item].group | default('ops') }}"
     home: "{{ users_create[item].home | default('/home/' + item) }}"
-    shell: /bin/sh
+    shell: /usr/local/bin/zsh
+  loop:
+    "{{ users_create.keys()|flatten(levels=1) }}"
+  tags:
+    - users
+
+- name: Copy zsh configuration
+  ansible.builtin.copy:
+    src: zshrc
+    dest: "{{ users_create[item].home | default('/home/' + item) }}/.zshrc"
+    owner: "{{ item }}"
+    group: "{{ users_create[item].group | default('ops') }}"
   loop:
     "{{ users_create.keys()|flatten(levels=1) }}"
   tags:

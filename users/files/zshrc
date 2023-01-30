@@ -1,0 +1,7 @@
+#History setup
+HISTFILE=$HOME/.zsh_history
+HISTSIZE=1000
+SAVEHIST=$HISTSIZ
+
+# Prompt
+export PROMPT="%n@%m %B%F{default}% %0(?..%? )$ %b%f%k"
