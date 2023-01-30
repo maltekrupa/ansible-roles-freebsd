@@ -10,6 +10,7 @@ generic_service_pidfile_directory: "/var/run/{{ generic_service_name }}"
 generic_service_content_directory: "{{ generic_service_path_prefix }}/{{ generic_service_name }}"
 
 generic_service_command: "{{ generic_service_home }}/{{ generic_service_name }}"
+generic_service_procname: "{{ generic_service_command }}"
 
 generic_service_rcd_file: "{{ generic_service_path_prefix }}/etc/rc.d/{{ generic_service_name }}"
 generic_service_rcconfd_file: "{{ generic_service_path_prefix }}/etc/rc.conf.d/{{ generic_service_name }}"

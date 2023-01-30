@@ -1,28 +1,3 @@
-#!/bin/sh
-
-# PROVIDE: {{ generic_service_name }}
-# REQUIRE: LOGIN
-# KEYWORD: shutdown
-
-# Add the following lines to /etc/rc.conf to enable {{ generic_service_name }}
-# {{ generic_service_name }}_enable="YES"
-
-. /etc/rc.subr
-
-name={{ generic_service_name }}
-rcvar={{ generic_service_name }}_enable
-
-load_rc_config $name
-
 export HOME="{{ generic_service_content_directory }}"
 
 : {{ '${' }}{{ generic_service_name }}_enable:="NO"{{ '}' }}
-
-pidfile="{{ generic_service_pidfile_directory }}/${name}.pid"
-
-procname="{{ generic_service_command }}"
-{{ generic_service_name }}_chdir="{{ generic_service_content_directory }}"
-command="/usr/sbin/daemon"
-command_args="-p ${pidfile} -t ${name} -u {{ generic_service_user }} -o {{ generic_service_log_file }} ${procname} run"
-
-run_rc_command "$1"

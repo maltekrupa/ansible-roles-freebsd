@@ -40,7 +40,7 @@
 
 - name: rc.d script
   ansible.builtin.template:
-    src: rc.d-script
+    src: rc-script
     dest: "{{ generic_service_rcd_file }}"
     mode: 0750
     owner: root
