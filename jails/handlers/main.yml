@@ -4,3 +4,8 @@
   ansible.builtin.service:
     name: jail
     state: restarted
+
+- name: restart devfs
+  ansible.builtin.service:
+    name: devfs
+    state: restarted

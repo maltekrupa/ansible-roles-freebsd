@@ -1,0 +1,2 @@
+[ruleset=5]
+add path 'bpf*' unhide

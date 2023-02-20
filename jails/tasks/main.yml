@@ -35,6 +35,12 @@
     src: jail.conf
     dest: /etc/jail.conf
 
+- name: Create devfs rules to run tcpdump in jails
+  ansible.builtin.template:
+    src: devfs.rules
+    dest: /etc/devfs.rules
+  notify: restart devfs
+
 - name: Start
   ansible.builtin.service:
     name: jail
