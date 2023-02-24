@@ -1,7 +1,12 @@
 #History setup
-HISTFILE=$HOME/.zsh_history
-HISTSIZE=1000
-SAVEHIST=$HISTSIZ
+export HISTFILE=~/.zshistory
+export HISTSIZE=10000
+export SAVEHIST=$HISTSIZE
 
-# Prompt
+setopt INC_APPEND_HISTORY
+export HISTTIMEFORMAT="[%F %T] "
+setopt EXTENDED_HISTORY
+setopt HIST_IGNORE_ALL_DUPS
+
+## Prompt
 export PROMPT="%n@%m %B%F{default}% %0(?..%? )$ %b%f%k"
