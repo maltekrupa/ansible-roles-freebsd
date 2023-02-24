@@ -34,6 +34,10 @@ defaults
   errorfile 503 /usr/local/share/examples/haproxy/errorfiles/503.http
   errorfile 504 /usr/local/share/examples/haproxy/errorfiles/504.http
 
+  compression algo gzip
+  compression type text/html text/plain text/css text/javascript
+
+
 frontend stats
     bind localhost:8404
     stats enable
@@ -46,6 +50,7 @@ frontend incoming
     bind     :::8443 v4v6 ssl crt {{ haproxy_cert_dir }} alpn h2,http/1.1
     redirect scheme https code 301 if !{ ssl_fc }
     http-response set-header Strict-Transport-Security max-age=63072000
+    http-response del-header server
     default_backend no-match
 
 {% for item in haproxy_servers %}
