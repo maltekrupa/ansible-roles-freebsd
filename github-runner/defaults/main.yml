@@ -6,6 +6,7 @@ github_runner_checksum_archive: 4e80069a91a2cb1e39269c7666b3a80a3df33176eedd5a02
 github_runner_path_prefix: /usr/local
 github_runner_home: "{{ github_runner_path_prefix }}/github-runner"
 github_runner_binary_file: "{{ github_runner_home }}/github-runner"
+github_runner_startup_script: "{{ github_runner_home }}/startup.sh"
 github_runner_rcd_file: "{{ github_runner_path_prefix }}/etc/rc.d/github_runner"
 github_runner_log_file: "/var/log/github_runner.log"
 

@@ -93,6 +93,14 @@
   notify:
     - restart github-runner
 
+- name: Start script
+  ansible.builtin.template:
+    src: startup.sh
+    dest: "{{ github_runner_startup_script }}"
+    mode: 0750
+    owner: root
+    group: nobody
+
 - name: rc.d script
   ansible.builtin.template:
     src: rc.d-script
