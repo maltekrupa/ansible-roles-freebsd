@@ -3,8 +3,8 @@
 - name: Download base.txz
   ansible.builtin.get_url:
     url: "https://download.freebsd.org/ftp/releases/amd64/amd64/{{ jails_version }}/base.txz"
-    dest: /tmp/base.txz
-    checksum: sha256:565baf7cf520cedfa01c5260f6a614b71c5e2b37ba3ee22e1342906548aa24ad
+    dest: /tmp/base-{{ jails_version }}.txz
+    checksum: sha256:3a9250f7afd730bbe274691859756948b3c57a99bcda30d65d46ae30025906f0
 
 - name: Create dataset
   community.general.zfs:
@@ -13,7 +13,7 @@
 
 - name: Extract base.txz
   ansible.builtin.command:
-    cmd: "tar -xvf /tmp/base.txz -C /usr/local/jails/{{ jails_version }}/root"
+    cmd: "tar -xvf /tmp/base-{{ jails_version }}.txz -C /usr/local/jails/{{ jails_version }}/root"
     creates: "/usr/local/jails/{{ jails_version }}/root/etc/passwd"
 
 - name: Update
