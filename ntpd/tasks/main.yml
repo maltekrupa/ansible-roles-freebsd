@@ -1,0 +1,6 @@
+---
+
+- name: Enable ntpd
+  community.general.sysrc:
+    name: "ntpd_enable"
+    value: "YES"
