@@ -1,0 +1,7 @@
+---
+
+dma_smarthost: ""
+dma_port: 587
+dma_email: ""
+dma_password: ""
+dma_target_email: ""

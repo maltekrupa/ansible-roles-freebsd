@@ -1,0 +1,58 @@
+---
+
+- name: Disable sendmail
+  community.general.sysrc:
+    name: sendmail_enable
+    value: "NONE"
+
+- name: Configure OS to use dma
+  ansible.builtin.template:
+    src: mailer.conf
+    dest: /etc/mail/mailer.conf
+    mode: 0644
+
+- name: Create periodic.conf
+  copy:
+    content: ""
+    dest: /etc/periodic.conf
+    force: false
+    owner: root
+    group: wheel
+    mode: 0644
+
+- name: Disable sendmail specific periodic configuration
+  ansible.builtin.lineinfile:
+    path: /etc/periodic.conf
+    line: "{{ item }}"
+  loop:
+    - 'daily_clean_hoststat_enable="NO"'
+    - 'daily_status_mail_rejects_enable="NO"'
+    - 'daily_status_include_submit_mailq="NO"'
+    - 'daily_submit_queuerun="NO"'
+
+- name: Configure dma.conf
+  ansible.builtin.template:
+    src: dma.conf
+    dest: /etc/dma/dma.conf
+    owner: root
+    group: wheel
+    mode: 0644
+
+- name: Configure auth.conf
+  ansible.builtin.template:
+    src: auth.conf
+    dest: /etc/dma/auth.conf
+    owner: root
+    group: mail
+    mode: 0640
+
+- name: Create alias for root
+  ansible.builtin.lineinfile:
+    path: /etc/mail/aliases
+    line: "root: {{ dma_target_email }}"
+  register: alias
+
+- name: Run newaliases on alias change
+  ansible.builtin.command:
+    cmd: /usr/bin/newaliases
+  when: alias.changed
