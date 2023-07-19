@@ -1,0 +1,6 @@
+---
+
+dnsmasq_dhcp_range: 10.0.2.10,10.0.2.254
+dnsmasq_interface: vm-public
+dnsmasq_nameservers_v4: "{{ network_nameservers_v4 }}"
+dnsmasq_nameservers_v6: "{{ network_nameservers_v6 }}"
