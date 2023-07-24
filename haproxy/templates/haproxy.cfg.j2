@@ -64,7 +64,7 @@ backend no-match
 {% for item in haproxy_servers %}
 backend be_{{ item.name }}
 {% if item.mode is defined and item.mode %}
-    option httpchk {{ item.mode }}
+    mode '{{ item.mode }}'
 {% else %}
     mode 'http'
 {% endif %}
@@ -75,7 +75,7 @@ backend be_{{ item.name }}
 {% endif %}
     option forwardfor
 {% if item.healthcheck is defined and item.healthcheck %}
-    option httpchk {{ item.healthcheck }}
+    {{ item.healthcheck }}
 {% endif %}
 {% for srv in item.address %}
     server {{ item.name }}-{{ loop.index }} {{ srv }} check
