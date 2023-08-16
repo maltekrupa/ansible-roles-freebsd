@@ -5,15 +5,6 @@
     name: acme.sh
     state: present
 
-# This is too generic and should probably be somewhere else
-- name: Create directory newsyslog
-  ansible.builtin.file:
-    path: /usr/local/etc/newsyslog.conf.d
-    state: directory
-    owner: root
-    group: wheel
-    mode: 0644
-
 - name: Create newsyslog configuration
   ansible.builtin.template:
     src: acme.sh.conf

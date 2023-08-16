@@ -1,4 +1,5 @@
 ---
+
 - name: Install zsh
   community.general.pkgng:
     state: present
