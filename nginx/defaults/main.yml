@@ -1,0 +1,11 @@
+---
+
+nginx_configuration_directory: /usr/local/etc/nginx
+
+# example
+# nginx_vhosts:
+#   example:
+#     fqdn: example.com
+#   example2:
+#     fqdn: another.example.com
+nginx_vhosts: {}

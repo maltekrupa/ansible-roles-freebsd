@@ -1,0 +1,9 @@
+{% set cfg = nginx_vhosts[item] %}
+
+server {
+  listen [::]:8080;
+  listen 8080;
+  server_name {{ cfg.fqdn }};
+
+  root /usr/local/www/{{ item }};
+}
