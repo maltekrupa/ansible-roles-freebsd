@@ -9,3 +9,4 @@ nginx_configuration_directory: /usr/local/etc/nginx
 #   example2:
 #     fqdn: another.example.com
 nginx_vhosts: {}
+nginx_custom_headers: []
