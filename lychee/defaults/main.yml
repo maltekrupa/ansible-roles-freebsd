@@ -13,7 +13,7 @@ lychee_psql_password: ""
 lychee_psql_database: ""
 
 lychee_document_root: /usr/local/www/Lychee/public
-lychee_php_fpm_socket: /var/run/php8.1-fpm.sock
+lychee_php_fpm_socket: /var/run/php-fpm.sock
 
 lychee_dependencies:
   - nginx
