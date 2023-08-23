@@ -40,11 +40,13 @@
     url: "https://github.com/LycheeOrg/Lychee/releases/download/v{{ lychee_version }}/Lychee.zip"
     dest: /tmp/lychee.zip
     checksum: "{{ lychee_checksum }}"
+  register: download
 
 - name: Extract release
   ansible.builtin.command:
     cmd: "unzip -o -d /usr/local/www /tmp/lychee.zip"
-    creates: "{{ lychee_document_root }}/index.php"
+  when:
+    download.changed
 
 - name: Configure lychee via .env
   ansible.builtin.template:
