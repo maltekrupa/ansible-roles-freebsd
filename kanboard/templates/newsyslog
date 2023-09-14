@@ -1,0 +1,8 @@
+# configuration file for newsyslog.conf
+# see newsyslog.conf(5) for details
+#
+# logfilename              [owner:group]   mode count size when  flags [/pid_file]
+# [sig_num]
+/var/log/nginx-access.log  root:wheel       600  14    *    @T00   BC  /var/run/nginx.pid
+/var/log/nginx-error.log   root:wheel       600  14    *    @T00   BC  /var/run/nginx.pid
+/var/log/php-fpm.log       root:wheel       600  14    *    @T00   BC
