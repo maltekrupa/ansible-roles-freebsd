@@ -6,11 +6,19 @@ haproxy_backend_httpchk: 'HEAD / HTTP/1.1\r\nHost:localhost'
 
 haproxy_cert_dir: /usr/local/etc/ssl/acme.sh
 
+haproxy_redirects: []
+# - name: redirect1
+#   source: redirect1.example.com
+#   target: https://redirect.target.com
+#   code: 301
 haproxy_servers: []
 # - name: app1
 #   fqdn: web1.example.com
 #   address:
 #     - 192.168.0.1:80
+#   healthcheck: |
+#     option httpchk
+#     http-check send hdr User-Agent "haproxy" meth GET uri /
 
 haproxy_global_vars: []
 

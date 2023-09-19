@@ -53,6 +53,10 @@ frontend incoming
     http-response del-header server
     default_backend no-match
 
+{% for item in haproxy_redirects %}
+    http-request redirect code {{ item.code }} location {{ item.target }} if { hdr_dom(host) -i {{ item.source }} }
+{% endfor %}
+
 {% for item in haproxy_servers %}
     acl acl_{{ item.fqdn }} hdr(host) -i {{ item.fqdn }}
     use_backend be_{{ item.name }} if acl_{{ item.fqdn }}
