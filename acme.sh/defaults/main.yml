@@ -1,6 +1,16 @@
 ---
+
+# eMail address used to register a new account.
 acmesh_email: ""
+
+# DNSimple OAuth token to create and destroy TXT records when issuing a
+# certificate via Let's Encrypt. Up to date documentation on how to create this
+# token is available in the acme.sh wiki:
+# https://github.com/acmesh-official/acme.sh/wiki/dnsapi#dns_dnsimple
 acmesh_dnsimple_token: ""
 
+# Directory to store certificates, private keys, configuration and other files.
 acmesh_certhome: "/var/db/acme/certs"
+
+# Location of the (eventually rotated) logfile
 acmesh_logfile: "/var/log/acme.sh.log"

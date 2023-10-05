@@ -2,7 +2,8 @@
 
 Installs acme.sh on FreeBSD.
 
-It is built to run with a setup consisting of DNSimple and haproxy.
+It is built to run with a setup consisting of DNSimple and haproxy to issue
+certificates via Let's Encrypt.
 
 The role does
 - install acme.sh
@@ -34,25 +35,8 @@ $ acme.sh --deploy -d <domain> --deploy-hook haproxy --ecc
 
 ## Variables
 
-Available variables are listed below, along with default values (see
-`defaults/main.yml`):
-
-> acmesh_email: ""
-
-eMail address used to register a new account.
-
-> acmesh_dnsimple_token: ""
-
-DNSimple OAuth token to create and destroy TXT records when issuing a new
-certificate via Let's Encrypt.
-
-> acmesh_certhome: "/var/db/acme/certs"
-
-Directory to store certificates, configuration, private keys ...
-
-> acmesh_logfile: "/var/log/acme.sh.log"
-
-Logfile location.
+Available variables with default values and a description are listed in
+[defaults/main.yml](defaults/main.yml).
 
 ## License
 
