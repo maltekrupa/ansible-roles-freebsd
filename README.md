@@ -1,7 +1,30 @@
-# Work in progress (WIP): Ansible roles for freebsd
+# Ansible roles for freebsd
 
-WIP roles to configure freebsd hosts to my liking.
+Ansible roles to configure FreeBSD hosts and jails to my liking.
 
-Disclaimer: This is not at all working. It is a dump of stuff that I throw
-together in my spare time. If you use it, you have no idea what you're
-signing up for.
+These roles are mainly used on dedicated servers from Hetzner.com.
+
+| Service         | Documentation |
+|-----------------|---------------|
+| acme.sh         | ✅ |
+| dma             | ✅ |
+| dnsmasq         | ✅ |
+| firewall        |  |
+| generic-service |  |
+| github-runner   |  |
+| grafana-agent   |  |
+| haproxy         |  |
+| jail_exporter   |  |
+| jails           |  |
+| kanboard        |  |
+| lychee          |  |
+| network         |  |
+| newsyslog       |  |
+| nginx           |  |
+| nomad-server    |  |
+| ntpd            |  |
+| packages        |  |
+| postgres        |  |
+| ssh             |  |
+| sudo            |  |
+| users           |  |
