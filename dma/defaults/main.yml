@@ -1,7 +1,16 @@
 ---
 
+# Smarthost hostname the eMails are sent to.
 dma_smarthost: ""
+
+# Port of smarthost.
 dma_port: 587
+
+# eMail account which is used to login to smarthost.
 dma_email: ""
+
+# Password for account which is used to login to smarthost.
 dma_password: ""
+
+# Target eMail address the eMail is sent to.
 dma_target_email: ""

@@ -12,5 +12,5 @@ acmesh_dnsimple_token: ""
 # Directory to store certificates, private keys, configuration and other files.
 acmesh_certhome: "/var/db/acme/certs"
 
-# Location of the (eventually rotated) logfile
+# Location of the (eventually rotated) logfile.
 acmesh_logfile: "/var/log/acme.sh.log"
