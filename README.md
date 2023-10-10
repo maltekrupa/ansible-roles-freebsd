@@ -9,7 +9,7 @@ These roles are mainly used on dedicated servers from Hetzner.com.
 | acme.sh         | ✅ |
 | dma             | ✅ |
 | dnsmasq         | ✅ |
-| firewall        |  |
+| firewall        | ✅ |
 | generic-service |  |
 | github-runner   |  |
 | grafana-agent   |  |
