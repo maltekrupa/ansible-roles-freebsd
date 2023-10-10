@@ -4,7 +4,7 @@ Installs dnsmasq on FreeBSD.
 
 The role does
 - install dnsmasq
-- configures dma to provide DHCP capabilities on a certain interface
+- configure dma to provide DHCP capabilities on a certain interface
 
 ## Variables
 

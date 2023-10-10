@@ -5,7 +5,7 @@ Installs dma on FreeBSD.
 The role does
 - install dma
 - disable everything related to sendmail
-- configures dma to send root emails to a smarthost
+- configure dma to send root emails to a smarthost
 
 ## Variables
 
