@@ -10,7 +10,7 @@ These roles are mainly used on dedicated servers from Hetzner.com.
 | dma             | ✅ |
 | dnsmasq         | ✅ |
 | firewall        | ✅ |
-| generic-service |  |
+| generic-service | ✅ |
 | github-runner   |  |
 | grafana-agent   |  |
 | haproxy         |  |
