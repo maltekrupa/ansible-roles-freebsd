@@ -58,6 +58,12 @@
   notify:
     - restart service
 
+- name: Create newsyslog configuration
+  ansible.builtin.template:
+    src: newsyslog
+    dest: "/usr/local/etc/newsyslog.conf.d/{{ generic_service_name }}.conf"
+    mode: 0644
+
 - name: Enable service
   community.general.sysrc:
     name: "{{ generic_service_name }}_enable"

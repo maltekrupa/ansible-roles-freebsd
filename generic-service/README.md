@@ -1,6 +1,6 @@
 # generic-server
 
-Prepares everything for a service to run.
+Prepares everything for a service to run via daemon(8).
 
 The role does
 - install dependencies
