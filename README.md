@@ -11,7 +11,7 @@ These roles are mainly used on dedicated servers from Hetzner.com.
 | dnsmasq         | ✅ |
 | firewall        | ✅ |
 | generic-service | ✅ |
-| github-runner   |  |
+| github-runner   | ✅ |
 | grafana-agent   |  |
 | haproxy         |  |
 | jail_exporter   |  |
