@@ -20,7 +20,7 @@ procname="{{ generic_service_procname }}"
 
 {{ generic_service_name }}_chdir="{{ generic_service_content_directory }}"
 
-command_args="-p ${pidfile} -t ${name} -u {{ generic_service_user }} -o {{ generic_service_log_file }} ${task}"
+command_args="-p ${pidfile} -t ${name} -u {{ generic_service_user }} -H -o {{ generic_service_log_file }} ${task}"
 
 load_rc_config $name
 run_rc_command "$1"
