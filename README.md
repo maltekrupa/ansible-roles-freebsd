@@ -12,7 +12,7 @@ These roles are mainly used on dedicated servers from Hetzner.com.
 | firewall        | ✅ |
 | generic-service | ✅ |
 | github-runner   | ✅ |
-| grafana-agent   |  |
+| grafana-agent   | ✅ |
 | haproxy         |  |
 | jail_exporter   |  |
 | jails           |  |
