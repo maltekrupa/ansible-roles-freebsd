@@ -4,7 +4,7 @@
   ansible.builtin.get_url:
     url: "https://download.freebsd.org/ftp/releases/amd64/amd64/{{ jails_version }}/base.txz"
     dest: /tmp/base-{{ jails_version }}.txz
-    checksum: sha256:3a9250f7afd730bbe274691859756948b3c57a99bcda30d65d46ae30025906f0
+    checksum: sha256:05a7c268aa4bdc5eb178f4611875acaaee5b210b7b57ecc2445345ac839b7cb8
 
 - name: Create dataset
   community.general.zfs:

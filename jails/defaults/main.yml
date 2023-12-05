@@ -1,5 +1,5 @@
 ---
-jails_version: 13.2-RELEASE
+jails_version: 14.0-RELEASE
 jails_create: {}
 # Example
 # jails_create:
