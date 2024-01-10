@@ -1,9 +1,17 @@
 ---
+
+# We have no loopback on jails (yet?), so bind to a RFC1918 address
+haproxy_in_jail: true
+
 haproxy_backend_name: 'habackend'
 haproxy_backend_mode: 'http'
 haproxy_backend_balance_method: 'roundrobin'
 haproxy_backend_httpchk: 'HEAD / HTTP/1.1\r\nHost:localhost'
 
+haproxy_listen_port_http: 8080
+haproxy_listen_port_https: 8443
+
+haproxy_tls_enabled: true
 haproxy_cert_dir: /usr/local/etc/ssl/acme.sh
 
 haproxy_redirects: []

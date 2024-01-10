@@ -1,6 +1,10 @@
 # Collect log with UDP
 $ModLoad imudp
+{% if haproxy_in_jail %}
 $UDPServerAddress {{ network_ipv4_address }}
+{% else %}
+$UDPServerAddress 127.0.0.1
+{% endif %}
 $UDPServerRun 514
 
 local0.* /var/log/haproxy.log

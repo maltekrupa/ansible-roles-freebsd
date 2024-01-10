@@ -1,5 +1,10 @@
 global
+{# We have no loopback on jails (yet?), so bind to a RFC1918 address #}
+{% if haproxy_in_jail %}
   log {{ network_ipv4_address }}:514 local0
+{% else %}
+  log 127.0.0.1:514 local0
+{% endif %}
   chroot /var/empty
   user www
   group www
@@ -46,10 +51,12 @@ frontend stats
     stats admin if LOCALHOST
 
 frontend incoming
-    bind     :::8080 v4v6
-    bind     :::8443 v4v6 ssl crt {{ haproxy_cert_dir }} alpn h2,http/1.1
+    bind     :::{{ haproxy_listen_port_http }} v4v6
+{% if haproxy_tls_enabled %}
+    bind     :::{{ haproxy_listen_port_https }} v4v6 ssl crt {{ haproxy_cert_dir }} alpn h2,http/1.1
     redirect scheme https code 301 if !{ ssl_fc }
     http-response set-header Strict-Transport-Security max-age=63072000
+{% endif %}
     http-response del-header server
     default_backend no-match
 
