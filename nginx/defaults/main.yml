@@ -7,7 +7,9 @@ nginx_configuration_directory: /usr/local/etc/nginx
 #   example:
 #     fqdn: example.com
 #     custom_headers: []
+#     custom_config: ""
 #   example2:
 #     fqdn: another.example.com
 #     custom_headers: []
+#     custom_config: ""
 nginx_vhosts: {}

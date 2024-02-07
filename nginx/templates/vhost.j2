@@ -16,5 +16,9 @@ server {
 {% endfor %}
 {% endif %}
 
+{% if cfg.custom_config is defined %}
+{{ cfg.custom_config | indent(width=2, first=True) }}
+{% endif %}
+
   root /usr/local/www/{{ item }};
 }
