@@ -24,6 +24,8 @@ procname="{{ grafana_agent_binary_file }}"
 command="/usr/sbin/daemon"
 command_args="-p ${pidfile} -t ${name} -o {{ grafana_agent_log_file }} \
   /usr/bin/env ${grafana_env} ${procname} \
+  -server.http.address=127.0.0.1:8080 \
+  -server.grpc.address=127.0.0.1:9095 \
   -config.file=${grafana_agent_config}"
 
 run_rc_command "$1"
