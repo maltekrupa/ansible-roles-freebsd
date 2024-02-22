@@ -1,13 +1,13 @@
 ---
 
 # String of version to install.
-grafana_agent_version: v0.23.0
+grafana_agent_version: v0.39.2
 
 # String of sha256 checksum of extracted binary.
-grafana_agent_checksum_binary: 99f981a5c2bf55eae202c1cb809f79b50059a99d6fc9ed5ebae42f4915679c3a
+grafana_agent_checksum_binary: 3a487812605ecd9718962094b526d52eda888a86569c00fb8ad5b9e95bf63edd
 
 # String of sha256 checksum of downloaded archive.
-grafana_agent_checksum_archive: ec067782cc0fcd9c4e951fd6dd0d8013df7f5ed2cd0acb495ab3acfeb6e72b92
+grafana_agent_checksum_archive: 75e53c38daef8a6aa224a269ae3d6455ae803456c2ab9ed3194cf812a1e54c19
 
 # String of path prefix for service related files.
 grafana_agent_path_prefix: /usr/local
