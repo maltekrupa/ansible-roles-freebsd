@@ -4,7 +4,7 @@
   ansible.builtin.get_url:
     url: https://download.freebsd.org/ftp/releases/amd64/amd64/{{ jails_version }}/base.txz
     dest: /tmp/base-{{ jails_version }}.txz
-    checksum: sha256:05a7c268aa4bdc5eb178f4611875acaaee5b210b7b57ecc2445345ac839b7cb8
+    checksum: "{{ jails_base_checksum }}"
     mode: "0644"
 
 - name: Create dataset
@@ -15,6 +15,7 @@
 - name: Extract base.txz
   ansible.builtin.unarchive:
     src: /tmp/base-{{ jails_version }}.txz
+    remote_src: true
     dest: /usr/local/jails/{{ jails_version }}/root
     creates: /usr/local/jails/{{ jails_version }}/root/etc/passwd
 

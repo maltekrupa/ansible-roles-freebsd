@@ -1,5 +1,7 @@
 ---
 jails_version: 14.1-RELEASE
+# https://download.freebsd.org/ftp/releases/amd64/amd64/14.1-RELEASE/base.txz
+jails_base_checksum: sha256:bb451694e8435e646b5ff7ddc5e94d5c6c9649f125837a34b2a2dd419732f347
 jails_create: {}
 # Example
 # jails_create:
