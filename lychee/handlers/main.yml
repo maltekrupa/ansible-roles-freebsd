@@ -1,6 +1,12 @@
 ---
 
-- name: restart nginx
+- name: Restart nginx
   ansible.builtin.service:
     name: nginx
     state: restarted
+
+- name: Extract release
+  ansible.builtin.unarchive:
+    src: /tmp/lychee.zip
+    dest: /usr/local/www
+  changed_when: true

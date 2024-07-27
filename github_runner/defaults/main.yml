@@ -1,0 +1,40 @@
+---
+
+# String of version to install.
+github_runner_version: v0.6.3
+
+# String of sha256 checksum of extracted binary.
+github_runner_checksum_binary: 33d15de9327e5fe10f532b05bc9af5f9289c581e7dcf2daf49aba95a3995fd2d
+
+# String of sha256 checksum of downloaded archive.
+github_runner_checksum_archive: 234e5cc8bae2155a3aa3f719ec3986f46166cf8af73571b86448f94dfb80d1a8
+
+# String of path prefix for service related files.
+github_runner_path_prefix: /usr/local
+
+# String of virtual home directory.
+# No user or group will be created. Instead the user "nobody" will be used.
+github_runner_home: "{{ github_runner_path_prefix }}/github-runner"
+
+# String of path to the extracted binary.
+github_runner_binary_file: "{{ github_runner_home }}/github-runner"
+
+# String of path to the startup script.
+github_runner_startup_script: "{{ github_runner_home }}/startup.sh"
+
+# String of path to the rc script.
+github_runner_rcd_file: "{{ github_runner_path_prefix }}/etc/rc.d/github_runner"
+
+# String of path to the log file.
+github_runner_log_file: /var/log/github_runner.log
+
+# List of strings with package dependencies.
+github_runner_dependencies:
+  - node
+  - bash
+
+# Bool to determine if a private SSH key should be deployed.
+github_runner_ssh_key_deploy: false
+
+# String of the private SSH key.
+github_runner_ssh_key: ""

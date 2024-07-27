@@ -1,15 +1,15 @@
 ---
 - name: Configure sshd_config
-  template:
+  ansible.builtin.template:
     src: sshd_config.j2
     dest: /etc/ssh/sshd_config
     owner: root
     group: wheel
-    mode: 0644
+    mode: "0644"
   notify:
-    - restart sshd
+    - Restart sshd
 
 - name: Remove temporary ssh configuration in rc.conf
   community.general.sysrc:
-    name: "sshd_flags"
+    name: sshd_flags
     state: absent

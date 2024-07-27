@@ -1,6 +1,6 @@
 ---
 
-- name: Restart pf
+- name: Run newaliases
   ansible.builtin.command:
-    cmd: pfctl -f /etc/pf.conf
+    cmd: /usr/bin/newaliases
   changed_when: true

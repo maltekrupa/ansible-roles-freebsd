@@ -14,11 +14,9 @@ dnsmasq_interface: ""
 # A list of IPv4 nameservers which the clients will receive via a DHCP option.
 # Usually this is set to "{{ network_nameservers_v4 }}".
 dnsmasq_nameservers_v4: []
-
 # A list of IPv6 nameservers which the clients will receive via a DHCP option.
 # Usually this is set to "{{ network_nameservers_v6 }}".
 dnsmasq_nameservers_v6: []
-
 # A list of maps containing MAC and IPv4 addresses (haven't tested IPv6 yet).
 # This allows you to provide a static IPv4 address to a certain MAC address.
 #

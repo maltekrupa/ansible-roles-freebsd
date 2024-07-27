@@ -1,5 +1,4 @@
 ---
-
 - name: Install dependencies
   community.general.pkgng:
     name: "{{ lychee_dependencies | join(' ') }}"
@@ -11,7 +10,7 @@
     dest: /usr/local/etc/nginx/nginx.conf
     owner: root
     group: wheel
-    mode: 0644
+    mode: "0644"
   notify: restart nginx
 
 - name: Configure www.conf
@@ -20,13 +19,13 @@
     dest: /usr/local/etc/php-fpm.d/www.conf
     owner: root
     group: wheel
-    mode: 0644
+    mode: "0644"
 
 - name: Create newsyslog configuration
   ansible.builtin.template:
     src: newsyslog
     dest: /usr/local/etc/newsyslog.conf.d/lychee.conf
-    mode: 0644
+    mode: "0644"
 
 - name: Create document root directory
   ansible.builtin.file:
@@ -34,19 +33,16 @@
     owner: www
     group: www
     state: directory
+    mode: "0755"
 
 - name: Download release
   ansible.builtin.get_url:
-    url: "https://github.com/LycheeOrg/Lychee/releases/download/v{{ lychee_version }}/Lychee.zip"
+    url: https://github.com/LycheeOrg/Lychee/releases/download/v{{ lychee_version }}/Lychee.zip
     dest: /tmp/lychee.zip
     checksum: "{{ lychee_checksum }}"
-  register: download
-
-- name: Extract release
-  ansible.builtin.command:
-    cmd: "unzip -o -d /usr/local/www /tmp/lychee.zip"
-  when:
-    download.changed
+    mode: "0644"
+  notify:
+    - Extract Release
 
 - name: Configure lychee via .env
   ansible.builtin.template:
@@ -54,7 +50,7 @@
     dest: /usr/local/www/Lychee/.env
     owner: www
     group: www
-    mode: 0644
+    mode: "0644"
 
 - name: Enable php-fpm
   community.general.sysrc:

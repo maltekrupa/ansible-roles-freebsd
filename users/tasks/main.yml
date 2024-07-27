@@ -1,5 +1,4 @@
 ---
-
 - name: Install zsh
   community.general.pkgng:
     state: present
@@ -11,8 +10,7 @@
   ansible.builtin.group:
     state: present
     name: "{{ users_create[item].group | default('ops') }}"
-  loop:
-    "{{ users_create.keys()|flatten(levels=1) }}"
+  loop: "{{ users_create.keys() | flatten(levels=1) }}"
   tags:
     - users
 
@@ -22,8 +20,7 @@
     group: "{{ users_create[item].group | default('ops') }}"
     home: "{{ users_create[item].home | default('/home/' + item) }}"
     shell: /usr/local/bin/zsh
-  loop:
-    "{{ users_create.keys()|flatten(levels=1) }}"
+  loop: "{{ users_create.keys() | flatten(levels=1) }}"
   tags:
     - users
 
@@ -33,8 +30,8 @@
     dest: "{{ users_create[item].home | default('/home/' + item) }}/.zshrc"
     owner: "{{ item }}"
     group: "{{ users_create[item].group | default('ops') }}"
-  loop:
-    "{{ users_create.keys()|flatten(levels=1) }}"
+    mode: "0644"
+  loop: "{{ users_create.keys() | flatten(levels=1) }}"
   tags:
     - users
 
@@ -44,11 +41,9 @@
     path: "{{ users_create[item].home | default('/home/' + item) }}/.ssh"
     owner: "{{ item }}"
     group: "{{ users_create[item].group | default('ops') }}"
-    mode: 0700
-  loop:
-    "{{ users_create.keys()|flatten(levels=1) }}"
-  when:
-    users_create[item].ssh_keys is defined
+    mode: "0700"
+  loop: "{{ users_create.keys() | flatten(levels=1) }}"
+  when: users_create[item].ssh_keys is defined
   tags:
     - users
 
@@ -58,11 +53,9 @@
     dest: "{{ users_create[item].home | default('/home/' + item) }}/.ssh/authorized_keys"
     owner: "{{ item }}"
     group: "{{ users_create[item].group | default('ops') }}"
-    mode: 0600
-  loop:
-    "{{ users_create.keys()|flatten(levels=1) }}"
-  when:
-    users_create[item].ssh_keys is defined
+    mode: "0600"
+  loop: "{{ users_create.keys() | flatten(levels=1) }}"
+  when: users_create[item].ssh_keys is defined
   tags:
     - users
 
@@ -70,7 +63,6 @@
   ansible.builtin.user:
     name: "{{ item }}"
     state: absent
-  loop:
-    "{{ users_remove }}"
+  loop: "{{ users_remove }}"
   tags:
     - users

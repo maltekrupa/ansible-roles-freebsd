@@ -1,5 +1,4 @@
 ---
-
 - name: Install
   community.general.pkgng:
     name: nginx
@@ -11,20 +10,19 @@
     state: directory
     owner: root
     group: wheel
-    mode: 0644
+    mode: "0644"
   loop:
     - "{{ nginx_configuration_directory }}/sites-available"
     - "{{ nginx_configuration_directory }}/sites-enabled"
 
 - name: Create site directories
   ansible.builtin.file:
-    path: "/usr/local/www/{{ item }}"
+    path: /usr/local/www/{{ item }}
     state: directory
     owner: www
     group: www
-    mode: 0770
-  loop:
-    "{{ nginx_vhosts.keys() }}"
+    mode: "0770"
+  loop: "{{ nginx_vhosts.keys() }}"
 
 - name: Configure nginx.conf
   ansible.builtin.template:
@@ -32,44 +30,40 @@
     dest: "{{ nginx_configuration_directory }}/nginx.conf"
     owner: root
     group: wheel
-    mode: 0644
+    mode: "0644"
   notify: reload nginx
 
 - name: Create vhosts
-  template:
+  ansible.builtin.template:
     src: vhost.j2
     dest: "{{ nginx_configuration_directory }}/sites-available/{{ item }}.conf"
     owner: root
     group: wheel
-    mode: 0644
-  loop:
-    "{{ nginx_vhosts.keys() }}"
+    mode: "0644"
+  loop: "{{ nginx_vhosts.keys() }}"
 
 - name: Find all enabled sites
   ansible.builtin.find:
     paths: "{{ nginx_configuration_directory }}/sites-enabled"
     patterns: "*.conf"
-    file_type: "any"
-  register:
-    nginx_enabled_sites
+    file_type: any
+  register: nginx_enabled_sites
 
 - name: Remove all enabled sites
-  file:
+  ansible.builtin.file:
     state: absent
     path: "{{ item }}"
-  loop:
-    "{{ nginx_enabled_sites.files | map(attribute='path') }}"
+  loop: "{{ nginx_enabled_sites.files | map(attribute='path') }}"
 
 - name: Create links for sites-available
-  file:
+  ansible.builtin.file:
     state: link
     src: "{{ nginx_configuration_directory }}/sites-available/{{ item }}.conf"
     dest: "{{ nginx_configuration_directory }}/sites-enabled/{{ item }}.conf"
     owner: root
     group: wheel
-    mode: 0644
-  loop:
-    "{{ nginx_vhosts.keys() }}"
+    mode: "0644"
+  loop: "{{ nginx_vhosts.keys() }}"
   notify:
     - reload nginx
 
@@ -77,7 +71,7 @@
   ansible.builtin.template:
     src: newsyslog
     dest: /usr/local/etc/newsyslog.conf.d/nginx.conf
-    mode: 0644
+    mode: "0644"
 
 - name: Enable nginx
   community.general.sysrc:

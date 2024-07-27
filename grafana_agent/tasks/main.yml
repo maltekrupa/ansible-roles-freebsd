@@ -1,0 +1,64 @@
+---
+- name: Check if binary already exist
+  ansible.builtin.stat:
+    path: "{{ grafana_agent_binary_file }}"
+    checksum_algorithm: sha256
+  register: binary_file
+
+- name: Download
+  ansible.builtin.get_url:
+    url: https://github.com/grafana/agent/releases/download/{{ grafana_agent_version }}/grafana-agent-freebsd-amd64.zip
+    dest: /tmp/grafana-agent-freebsd-amd64.zip
+    checksum: sha256:{{ grafana_agent_checksum_archive }}
+    force: false
+    mode: "0750"
+    owner: root
+    group: wheel
+  when: binary_file.stat.checksum is not defined or binary_file.stat.checksum != grafana_agent_checksum_binary
+
+- name: Extract archive
+  ansible.builtin.unarchive:
+    src: /tmp/grafana-agent-freebsd-amd64.zip
+    dest: /tmp
+    creates: /tmp/grafana-agent-freebsd-amd64
+  when: binary_file.stat.checksum is not defined or binary_file.stat.checksum != grafana_agent_checksum_binary
+
+- name: Move binary to {{ grafana_agent_binary_file }}
+  ansible.builtin.copy:
+    src: /tmp/grafana-agent-freebsd-amd64
+    dest: "{{ grafana_agent_binary_file }}"
+    remote_src: true
+    mode: "0750"
+    owner: root
+    group: wheel
+  when: binary_file.stat.checksum is not defined or binary_file.stat.checksum != grafana_agent_checksum_binary
+
+- name: Configuration file
+  ansible.builtin.template:
+    src: etc_grafana-agent.ini
+    dest: "{{ grafana_agent_config_file }}"
+    mode: "0750"
+    owner: root
+    group: wheel
+  notify:
+    - restart grafana-agent
+
+- name: Rc.d script
+  ansible.builtin.template:
+    src: etc_rc.d_grafana-agent
+    dest: "{{ grafana_agent_rcd_file }}"
+    mode: "0750"
+    owner: root
+    group: wheel
+  notify:
+    - restart grafana-agent
+
+- name: Enable service
+  community.general.sysrc:
+    name: grafana_agent_enable
+    value: "YES"
+
+- name: Start service
+  ansible.builtin.service:
+    name: grafana-agent
+    state: started

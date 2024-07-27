@@ -7,8 +7,8 @@
 - name: Enable RACCT/RCTL
   ansible.builtin.lineinfile:
     path: /boot/loader.conf
-    regexp: "^kern.racct.enable.+$"
-    line: 'kern.racct.enable="1"'
+    regexp: ^kern.racct.enable.+$
+    line: kern.racct.enable="1"
 
 - name: Enable service
   community.general.sysrc:

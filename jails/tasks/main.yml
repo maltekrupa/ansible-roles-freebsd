@@ -8,7 +8,7 @@
 
 - name: Enable
   community.general.sysrc:
-    name: "jail_enable"
+    name: jail_enable
     value: "YES"
 
 - name: Fix IPv6 issue
@@ -16,7 +16,7 @@
   # https://forums.freebsd.org/threads/52096/
   ansible.posix.sysctl:
     name: net.inet6.ip6.dad_count
-    value: '0'
+    value: "0"
 
 - name: Include tasks to build template jail
   ansible.builtin.include_tasks:
@@ -34,11 +34,13 @@
   ansible.builtin.template:
     src: jail.conf
     dest: /etc/jail.conf
+    mode: "0644"
 
 - name: Create devfs rules to run tcpdump in jails
   ansible.builtin.template:
     src: devfs.rules
     dest: /etc/devfs.rules
+    mode: "0644"
   notify: restart devfs
 
 - name: Start
@@ -46,5 +48,4 @@
     name: jail
     state: started
     args: "{{ item }}"
-  loop:
-    "{{ jails_create.keys() | flatten(levels=1) }}"
+  loop: "{{ jails_create.keys() | flatten(levels=1) }}"

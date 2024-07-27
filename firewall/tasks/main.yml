@@ -1,9 +1,9 @@
 ---
-
 - name: Configure
   ansible.builtin.template:
     src: pf.conf
     dest: /etc/pf.conf
+    mode: "0644"
   notify: restart pf
 
 - name: Enable service

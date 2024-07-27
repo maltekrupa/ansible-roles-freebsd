@@ -30,7 +30,6 @@ firewall_internal_network_range: ""
 #   haproxy: |
 #     rdr pass on $ext_if proto tcp from any to $ext_ipv4 port 80 -> 10.0.1.100 port 8080
 firewall_rdr_rules: {}
-
 # Map of strings with pass or block rules.
 #
 # Example:

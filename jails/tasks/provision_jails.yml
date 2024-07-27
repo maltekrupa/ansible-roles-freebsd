@@ -1,16 +1,13 @@
 ---
-
 - name: Create configuration directory
   community.general.zfs:
-    name: "zroot/jails/{{ item }}"
+    name: zroot/jails/{{ item }}
     state: present
-  loop:
-    "{{ jails_create.keys() | flatten(levels=1) }}"
+  loop: "{{ jails_create.keys() | flatten(levels=1) }}"
 
 - name: Create new jail from snapshot
   community.general.zfs:
-    name: "zroot/jails/{{ item }}/root"
+    name: zroot/jails/{{ item }}/root
     state: present
-    origin: "zroot/jails/{{ jails_version }}/root@template"
-  loop:
-    "{{ jails_create.keys() | flatten(levels=1) }}"
+    origin: zroot/jails/{{ jails_version }}/root@template
+  loop: "{{ jails_create.keys() | flatten(levels=1) }}"

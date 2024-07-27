@@ -1,9 +1,16 @@
 ---
 
-- name: Make sure pkg is setup
+- name: Check if pkg is setup already
+  ansible.builtin.stat:
+    path: /var/db/pkg/local.sqlite
+  register: pkg_stat
+
+- name: Setup pkg
   ansible.builtin.command:
     cmd: pkg -y
-  ignore_errors: true
+  register: pkg
+  when: not pkg_stat.stat.exists
+  changed_when: '"Bootstrapping" in pkg.stat.stdout'
 
 - name: Install packages
   community.general.pkgng:

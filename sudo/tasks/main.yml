@@ -7,14 +7,12 @@
 - name: Add sudoers.d files
   ansible.builtin.copy:
     content: "{{ sudoers_d[item] }}"
-    dest: "/usr/local/etc/sudoers.d/{{ item }}"
+    dest: /usr/local/etc/sudoers.d/{{ item }}
     owner: root
     group: wheel
-    mode: 0440
-  loop:
-    "{{ sudoers_d.keys()|flatten(levels=1) }}"
-  when:
-    sudoers_d | length != 0
+    mode: "0440"
+  loop: "{{ sudoers_d.keys() | flatten(levels=1) }}"
+  when: sudoers_d | length != 0
 
 - name: Configure sudoers file
   ansible.builtin.template:
@@ -22,5 +20,5 @@
     dest: /usr/local/etc/sudoers
     owner: root
     group: wheel
-    mode: 0440
-    validate: 'visudo -cf %s'
+    mode: "0440"
+    validate: visudo -cf %s

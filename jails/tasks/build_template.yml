@@ -2,69 +2,73 @@
 
 - name: Download base.txz
   ansible.builtin.get_url:
-    url: "https://download.freebsd.org/ftp/releases/amd64/amd64/{{ jails_version }}/base.txz"
+    url: https://download.freebsd.org/ftp/releases/amd64/amd64/{{ jails_version }}/base.txz
     dest: /tmp/base-{{ jails_version }}.txz
     checksum: sha256:05a7c268aa4bdc5eb178f4611875acaaee5b210b7b57ecc2445345ac839b7cb8
+    mode: "0644"
 
 - name: Create dataset
   community.general.zfs:
-    name: "zroot/jails/{{ jails_version }}/root"
+    name: zroot/jails/{{ jails_version }}/root
     state: present
 
 - name: Extract base.txz
-  ansible.builtin.command:
-    cmd: "tar -xvf /tmp/base-{{ jails_version }}.txz -C /usr/local/jails/{{ jails_version }}/root"
-    creates: "/usr/local/jails/{{ jails_version }}/root/etc/passwd"
+  ansible.builtin.unarchive:
+    src: /tmp/base-{{ jails_version }}.txz
+    dest: /usr/local/jails/{{ jails_version }}/root
+    creates: /usr/local/jails/{{ jails_version }}/root/etc/passwd
 
 - name: Update
   ansible.builtin.command:
-    cmd: "freebsd-update -b /usr/local/jails/{{ jails_version }}/root fetch install --not-running-from-cron"
-    creates: "/usr/local/jails/{{ jails_version }}/root/boot/kernel.old/.freebsd-update"
+    cmd: freebsd-update -b /usr/local/jails/{{ jails_version }}/root fetch install --not-running-from-cron
+    creates: /usr/local/jails/{{ jails_version }}/root/boot/kernel.old/.freebsd-update
 
 - name: Enable sshd
   community.general.sysrc:
     name: sshd_enable
     value: "YES"
-    path: "/usr/local/jails/{{ jails_version }}/root/etc/rc.conf"
+    path: /usr/local/jails/{{ jails_version }}/root/etc/rc.conf
 
 - name: Allow root login via SSH key
   ansible.builtin.lineinfile:
-    path: "/usr/local/jails/{{ jails_version }}/root/etc/ssh/sshd_config"
+    path: /usr/local/jails/{{ jails_version }}/root/etc/ssh/sshd_config
     line: PermitRootLogin prohibit-password
-    create: yes
+    create: true
+    mode: "0644"
 
 - name: Add resolv.conf
   ansible.builtin.copy:
     src: /etc/resolv.conf
-    dest: "/usr/local/jails/{{ jails_version }}/root/etc/resolv.conf"
-    remote_src: yes
+    dest: /usr/local/jails/{{ jails_version }}/root/etc/resolv.conf
+    remote_src: true
+    mode: "0644"
 
 - name: Create .ssh directory for root
   ansible.builtin.file:
-    path: "/usr/local/jails/{{ jails_version }}/root/root/.ssh"
+    path: /usr/local/jails/{{ jails_version }}/root/root/.ssh
     state: directory
-    mode: '0700'
+    mode: "0700"
 
 - name: Copy authorized_keys
   ansible.builtin.copy:
     src: /root/.ssh/authorized_keys
-    dest: "/usr/local/jails/{{ jails_version }}/root/root/.ssh/authorized_keys"
+    dest: /usr/local/jails/{{ jails_version }}/root/root/.ssh/authorized_keys
     owner: root
     group: wheel
-    mode: '0700'
-    remote_src: yes
+    mode: "0700"
+    remote_src: true
 
 - name: Install python
   community.general.pkgng:
     name: python
     state: present
-    chroot: "/usr/local/jails/{{ jails_version }}/root"
+    chroot: /usr/local/jails/{{ jails_version }}/root
 
 - name: Create syslog directory
   ansible.builtin.file:
     path: /usr/local/jails/{{ jails_version }}/root/usr/local/etc/syslog.d
     state: directory
-    mode: 0755
+    mode: "0755"
 
 - name: Create zfs snapshot
   community.general.zfs:

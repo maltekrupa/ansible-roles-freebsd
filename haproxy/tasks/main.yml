@@ -8,14 +8,14 @@
   ansible.builtin.file:
     path: /usr/local/etc/syslog.d
     state: directory
-    mode: 0755
+    mode: "0755"
   when: not haproxy_in_jail
 
 - name: Create syslog configuration
   ansible.builtin.template:
     src: syslog
     dest: /usr/local/etc/syslog.d/haproxy.conf
-    mode: 0644
+    mode: "0644"
 
 - name: Configure syslog to allow remote logs
   community.general.sysrc:
@@ -26,13 +26,13 @@
   ansible.builtin.template:
     src: newsyslog
     dest: /usr/local/etc/newsyslog.conf.d/haproxy.conf
-    mode: 0644
+    mode: "0644"
 
 - name: Create haproxy configuration
   ansible.builtin.template:
     src: haproxy.cfg.j2
     dest: /usr/local/etc/haproxy.conf
-    mode: 0644
+    mode: "0644"
     validate: haproxy -f %s -c -q
   notify: reload haproxy
 

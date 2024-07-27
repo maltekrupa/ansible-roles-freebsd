@@ -1,0 +1,112 @@
+---
+- name: Install dependencies
+  community.general.pkgng:
+    state: present
+    name: "{{ github_runner_dependencies | join(' ') }}"
+
+- name: Check if binary already exist
+  ansible.builtin.stat:
+    path: "{{ github_runner_binary_file }}"
+    checksum_algorithm: sha256
+  register: binary_file
+
+- name: Create directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: nobody
+    group: nobody
+    mode: "0750"
+  loop:
+    - "{{ github_runner_home }}"
+    - /var/run/github-runner
+
+- name: Create rc.d directory
+  ansible.builtin.file:
+    path: /usr/local/etc/rc.d
+    state: directory
+    owner: root
+    group: wheel
+    mode: "0750"
+
+- name: Create .ssh directory
+  ansible.builtin.file:
+    path: "{{ github_runner_home }}/.ssh"
+    state: directory
+    owner: nobody
+    group: nobody
+    mode: "0700"
+  when: github_runner_ssh_key_deploy
+
+- name: Create private SSH key
+  ansible.builtin.copy:
+    dest: "{{ github_runner_home }}/.ssh/id_ed25519"
+    content: "{{ github_runner_ssh_key + '\n' }}"
+    owner: nobody
+    group: nobody
+    mode: "0600"
+  when: github_runner_ssh_key_deploy
+
+- name: Create SSH config
+  ansible.builtin.template:
+    dest: "{{ github_runner_home }}/.ssh/config"
+    src: ssh_config
+    owner: nobody
+    group: nobody
+    mode: "0600"
+  when: github_runner_ssh_key_deploy
+
+- name: Download
+  ansible.builtin.get_url:
+    url: https://github.com/ChristopherHX/github-act-runner/releases/download/{{ github_runner_version }}/binary-freebsd-amd64.tar.gz
+    dest: /tmp/binary-freebsd-amd64.tar.gz
+    checksum: sha256:{{ github_runner_checksum_archive }}
+    force: false
+    mode: "0750"
+    owner: root
+    group: wheel
+  when: binary_file.stat.checksum is not defined or binary_file.stat.checksum != github_runner_checksum_binary
+  notify:
+    - Remove target if a new version is downloaded
+
+- name: Extract archive
+  ansible.builtin.unarchive:
+    src: /tmp/binary-freebsd-amd64.tar.gz
+    dest: /tmp
+    creates: /tmp/github-act-runner
+  when: binary_file.stat.checksum is not defined or binary_file.stat.checksum != github_runner_checksum_binary
+
+- name: Move binary to {{ github_runner_binary_file }}
+  ansible.builtin.copy:
+    src: /tmp/github-act-runner
+    dest: "{{ github_runner_binary_file }}"
+    remote_src: true
+    mode: "0750"
+    owner: nobody
+    group: nobody
+  when: binary_file.stat.checksum is not defined or binary_file.stat.checksum != github_runner_checksum_binary
+  notify:
+    - restart github-runner
+
+- name: Start script
+  ansible.builtin.template:
+    src: startup.sh
+    dest: "{{ github_runner_startup_script }}"
+    mode: "0750"
+    owner: root
+    group: nobody
+
+- name: Rc.d script
+  ansible.builtin.template:
+    src: rc.d-script
+    dest: "{{ github_runner_rcd_file }}"
+    mode: "0750"
+    owner: root
+    group: wheel
+  notify:
+    - restart github-runner
+
+- name: Enable service
+  community.general.sysrc:
+    name: github_runner_enable
+    value: "YES"

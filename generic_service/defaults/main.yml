@@ -1,0 +1,68 @@
+---
+
+# String of service name.
+#
+# NOTE: This name will be used for everything related to the service like:
+# - The rc script in /usr/local/etc/rc.d
+# - The log file in /var/log
+# - The pid file in /var/run
+# - The user account to run the service
+# - The group of the user account
+generic_service_name: service
+
+# String of the local user account to run the service.
+# NOTE: The user account will # not be created. Use the `users` role to create
+# users.
+generic_service_user: "{{ generic_service_name }}"
+
+# String of the local group account to run the service.
+# NOTE: The group account will not be created. Use the `users` role to create
+# users.
+generic_service_group: "{{ generic_service_name }}"
+
+# String of path prefix for service related files.
+generic_service_path_prefix: /usr/local
+
+# String of meta value for a directory which holds service related files.
+generic_service_home: "{{ generic_service_path_prefix }}/{{ generic_service_name }}"
+
+# String of directory which holds files for the service (e.g. deployables).
+# This is also the location from which the service will be started.
+generic_service_content_directory: "{{ generic_service_path_prefix }}/{{ generic_service_name }}"
+
+# String of command to execute on service start.
+generic_service_command: "{{ generic_service_home }}/{{ generic_service_name }}"
+
+# String of proc name in case generic_service_command is a script which executes
+# a different command.
+# Check the man page of rc.subr about "check_pidfile" to get more details.
+generic_service_procname: "{{ generic_service_command }}"
+
+# String of location of rc.d script.
+generic_service_rcd_file: "{{ generic_service_path_prefix }}/etc/rc.d/{{ generic_service_name }}"
+
+# Strings of location of rc.conf file holding environment variables.
+generic_service_rcconfd_file: "{{ generic_service_path_prefix }}/etc/rc.conf.d/{{ generic_service_name }}"
+
+# String of pid file directory to be created.
+# This directory will hold a file named "{{ generic_service_name}}.pid".
+generic_service_pidfile_directory: /var/run/{{ generic_service_name }}
+
+# String of log file location.
+generic_service_log_file: /var/log/{{ generic_service_name }}.log
+
+# List of strings. One key value pair for an environment variable per
+# entry.
+#
+# Example:
+# generic_service_environment_variables:
+# - PHX_HOST="generic-service.example.com"
+# - ENV="prod"
+generic_service_environment_variables: []
+# List of strings for
+#
+# Example:
+# generic_service_dependencies:
+# - nginx
+# - htop
+generic_service_dependencies: []

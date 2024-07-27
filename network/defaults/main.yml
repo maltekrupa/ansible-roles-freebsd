@@ -2,7 +2,6 @@
 network_interface: ""
 network_ipv4_needs_static_route: ""
 network_static_routes: []
-
 network_ipv4_address: ""
 network_ipv4_netmask: ""
 network_ipv4_gateway: ""

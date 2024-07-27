@@ -1,0 +1,12 @@
+---
+
+- name: Restart github-runner
+  ansible.builtin.service:
+    name: github_runner
+    state: restarted
+
+- name: Remove target if a new version is downloaded
+  ansible.builtin.file:
+    path: /tmp/github-act-runner
+    state: absent
+  changed_when: true

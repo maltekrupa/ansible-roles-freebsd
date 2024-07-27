@@ -1,0 +1,47 @@
+---
+
+# String of version to install.
+grafana_agent_version: v0.39.2
+
+# String of sha256 checksum of extracted binary.
+grafana_agent_checksum_binary: 3a487812605ecd9718962094b526d52eda888a86569c00fb8ad5b9e95bf63edd
+
+# String of sha256 checksum of downloaded archive.
+grafana_agent_checksum_archive: 75e53c38daef8a6aa224a269ae3d6455ae803456c2ab9ed3194cf812a1e54c19
+
+# String of path prefix for service related files.
+grafana_agent_path_prefix: /usr/local
+
+# String of full path to configuration file.
+grafana_agent_config_file: "{{ grafana_agent_path_prefix }}/etc/grafana-agent.yml"
+
+# String of full path to binary file.
+grafana_agent_binary_file: "{{ grafana_agent_path_prefix }}/bin/grafana-agent"
+
+# String of full path to rc script.
+grafana_agent_rcd_file: "{{ grafana_agent_path_prefix }}/etc/rc.d/grafana-agent"
+
+# String of path to write-ahead-log directory.
+grafana_agent_wal_directory: /var/db/grafana-agent
+
+# String of full path to log-position log file.
+grafana_agent_log_position_file: /var/db/grafana-agent-log-position.yml
+
+# String of full path to log file.
+grafana_agent_log_file: /var/log/grafana-agent.log
+
+# String of grafana cloud metrics username.
+# Find this at grafana.com -> My Account -> Prometheus -> Send Metrics
+grafana_agent_metrics_username: ""
+
+# String of grafana cloud metrics password (API Token).
+# Find this at grafana.com -> My Account -> Prometheus -> Send Metrics
+grafana_agent_metrics_password: ""
+
+# String of grafana cloud logs username.
+# Find this at grafana.com -> My Account -> Loki -> Send Logs
+grafana_agent_logs_username: ""
+
+# String of grafana cloud logs password (API Token).
+# Find this at grafana.com -> My Account -> Loki -> Send Logs
+grafana_agent_logs_password: ""
