@@ -2,15 +2,17 @@
 
 - name: Check if pkg is setup already
   ansible.builtin.stat:
-    path: /var/db/pkg/local.sqlite
+    path: /usr/local/etc/pkg.conf
   register: pkg_stat
 
 - name: Setup pkg
   ansible.builtin.command:
     cmd: pkg -y
   register: pkg
+  # Bootstrapping pkg always returns with exit code 1
   when: not pkg_stat.stat.exists
-  changed_when: '"Bootstrapping" in pkg.stat.stdout'
+  failed_when: pkg.rc != 1
+  changed_when: '"Installing" in pkg.stdout'
 
 - name: Install packages
   community.general.pkgng:
