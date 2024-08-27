@@ -31,7 +31,7 @@
     owner: root
     group: wheel
     mode: "0644"
-  notify: reload nginx
+  notify: Reload nginx
 
 - name: Create vhosts
   ansible.builtin.template:
@@ -65,7 +65,7 @@
     mode: "0644"
   loop: "{{ nginx_vhosts.keys() }}"
   notify:
-    - reload nginx
+    - Reload nginx
 
 - name: Create newsyslog configuration
   ansible.builtin.template:
