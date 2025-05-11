@@ -1,13 +1,13 @@
 ---
 
 # String of version to install.
-github_runner_version: v0.6.3
+github_runner_version: v0.10.0
 
 # String of sha256 checksum of extracted binary.
-github_runner_checksum_binary: 33d15de9327e5fe10f532b05bc9af5f9289c581e7dcf2daf49aba95a3995fd2d
+github_runner_checksum_binary: e7a91a14358723d7ca7d109ecef7ced0fe097116f4e024ceda5cca356d164b14
 
 # String of sha256 checksum of downloaded archive.
-github_runner_checksum_archive: 234e5cc8bae2155a3aa3f719ec3986f46166cf8af73571b86448f94dfb80d1a8
+github_runner_checksum_archive: 9001d82e6a3f741a270a06aa1a32146c1a8588b4a56d46dca8d21aa25ab11d7e
 
 # String of path prefix for service related files.
 github_runner_path_prefix: /usr/local
