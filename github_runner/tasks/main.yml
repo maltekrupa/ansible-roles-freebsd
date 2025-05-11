@@ -86,7 +86,7 @@
     group: nobody
   when: binary_file.stat.checksum is not defined or binary_file.stat.checksum != github_runner_checksum_binary
   notify:
-    - restart github-runner
+    - Restart github-runner
 
 - name: Start script
   ansible.builtin.template:
@@ -104,7 +104,7 @@
     owner: root
     group: wheel
   notify:
-    - restart github-runner
+    - Restart github-runner
 
 - name: Enable service
   community.general.sysrc:
