@@ -45,7 +45,7 @@
     owner: root
     group: wheel
   notify:
-    - restart service
+    - Restart service
 
 - name: Rc.conf.d script
   ansible.builtin.template:
@@ -55,7 +55,7 @@
     owner: root
     group: wheel
   notify:
-    - restart service
+    - Restart service
 
 - name: Create newsyslog configuration
   ansible.builtin.template:
