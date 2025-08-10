@@ -1,7 +1,7 @@
 ---
 - name: Install
   community.general.pkgng:
-    name: haproxy
+    name: haproxy-wolfssl
     state: present
 
 - name: Create syslog directory
