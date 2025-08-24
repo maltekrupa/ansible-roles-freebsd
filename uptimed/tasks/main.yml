@@ -1,0 +1,22 @@
+---
+
+- name: Install
+  community.general.pkgng:
+    name: uptimed
+    state: present
+  tags:
+    - uptimed
+
+- name: Enable
+  community.general.sysrc:
+    name: uptimed_enable
+    value: "YES"
+  tags:
+    - uptimed
+
+- name: Start
+  ansible.builtin.service:
+    name: uptimed
+    state: started
+  tags:
+    - uptimed
