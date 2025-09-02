@@ -32,6 +32,7 @@ github_runner_log_file: /var/log/github_runner.log
 github_runner_dependencies:
   - node
   - bash
+  - gtar
 
 # Bool to determine if a private SSH key should be deployed.
 github_runner_ssh_key_deploy: false

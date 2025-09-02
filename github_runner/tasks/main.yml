@@ -71,6 +71,7 @@
 
 - name: Extract archive
   ansible.builtin.unarchive:
+    remote_src: true
     src: /tmp/binary-freebsd-amd64.tar.gz
     dest: /tmp
     creates: /tmp/github-act-runner
