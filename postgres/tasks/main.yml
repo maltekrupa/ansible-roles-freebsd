@@ -1,20 +1,20 @@
 ---
 - name: Install
   community.general.pkgng:
-    name: postgresql14-server
+    name: postgresql17-server
     state: present
 
 - name: Create data directory
   ansible.builtin.command:
-    cmd: pg_ctl initdb -D /var/db/postgres/data14
-    creates: /var/db/postgres/data14
+    cmd: pg_ctl initdb -D /var/db/postgres/data17
+    creates: /var/db/postgres/data17
   become: true
   become_user: postgres
 
 - name: Configure pg_hba.conf
   ansible.builtin.template:
     src: pg_hba.conf.j2
-    dest: /var/db/postgres/data14/pg_hba.conf
+    dest: /var/db/postgres/data17/pg_hba.conf
     mode: "0600"
 
 - name: Enable
