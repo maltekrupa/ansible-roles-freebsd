@@ -1,0 +1,17 @@
+ARG THIN_TEMPLATE=default/thin
+ARG HOST_RESOLV_CONF=/etc/resolv.conf
+
+INCLUDE ${THIN_TEMPLATE} --arg HOST_RESOLV_CONF="${HOST_RESOLV_CONF}"
+
+CMD mkdir -p /root/.ssh
+CMD chmod 0700 /root/.ssh
+CMD echo "{{ bastille_ssh_key }}" > /root/.ssh/authorized_keys
+CMD chmod 0600 /root/.ssh/authorized_keys
+
+CMD echo "PermitRootLogin without-password" >> /etc/ssh/sshd_config
+
+SYSRC sshd_enable=YES
+SYSRC sshd_flags=""
+
+PKG python
+SERVICE sshd start

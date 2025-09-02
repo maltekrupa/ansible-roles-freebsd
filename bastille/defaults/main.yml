@@ -1,0 +1,4 @@
+---
+
+# SSH key for the root user inside of the jail
+bastille_ssh_key: ""

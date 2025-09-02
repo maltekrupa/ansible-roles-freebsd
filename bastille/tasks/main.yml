@@ -1,0 +1,46 @@
+---
+
+- name: Install bastille
+  community.general.pkgng:
+    name: bastille
+    state: present
+  tags:
+    - bastille
+
+- name: Enable
+  community.general.sysrc:
+    name: bastille_enable
+    value: "YES"
+  tags:
+    - bastille
+
+- name: Populate configuration file
+  ansible.builtin.template:
+    src: bastille.conf
+    dest: /usr/local/etc/bastille/bastille.conf
+    mode: "0644"
+  tags:
+    - bastille
+
+- name: Create base template directory
+  ansible.builtin.file:
+    path: /usr/local/bastille/templates/default/custom
+    state: directory
+    mode: '0755'
+  tags:
+    - bastille
+
+- name: Create base template
+  ansible.builtin.template:
+    src: template_custom
+    dest: /usr/local/bastille/templates/default/custom/Bastillefile
+    mode: "0644"
+  tags:
+    - bastille
+
+- name: Start
+  ansible.builtin.service:
+    name: bastille
+    state: started
+  tags:
+    - bastille
