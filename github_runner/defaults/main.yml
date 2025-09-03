@@ -29,7 +29,9 @@ github_runner_log_file: /var/log/github_runner.log
 
 # List of strings with package dependencies.
 github_runner_dependencies:
-  - node
+  - node24
+  - npm-node24
+  - gcc15
   - bash
   - gtar
 
