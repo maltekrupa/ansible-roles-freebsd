@@ -18,10 +18,10 @@ load_rc_config $name
 
 pidfile="/var/run/github-runner/${name}.pid"
 
-task="{{ github_runner_startup_script }}"
+task="{{ github_runner_binary_file }} run"
 procname="{{ github_runner_binary_file }}"
 github_runner_chdir="{{ github_runner_home }}"
 command="/usr/sbin/daemon"
-command_args="-p ${pidfile} -t ${name} -u nobody -o {{ github_runner_log_file }} ${task}"
+command_args="-p ${pidfile} -t ${name} -u {{ github_runner_username }} -o {{ github_runner_log_file }} ${task}"
 
 run_rc_command "$1"

@@ -9,18 +9,17 @@ github_runner_checksum_binary: e7a91a14358723d7ca7d109ecef7ced0fe097116f4e024ced
 # String of sha256 checksum of downloaded archive.
 github_runner_checksum_archive: 9001d82e6a3f741a270a06aa1a32146c1a8588b4a56d46dca8d21aa25ab11d7e
 
+# String of github username.
+github_runner_username: "github"
+
 # String of path prefix for service related files.
 github_runner_path_prefix: /usr/local
 
 # String of virtual home directory.
-# No user or group will be created. Instead the user "nobody" will be used.
-github_runner_home: "{{ github_runner_path_prefix }}/github-runner"
+github_runner_home: "/home/{{ github_runner_username }}"
 
 # String of path to the extracted binary.
-github_runner_binary_file: "{{ github_runner_home }}/github-runner"
-
-# String of path to the startup script.
-github_runner_startup_script: "{{ github_runner_home }}/startup.sh"
+github_runner_binary_file: "{{ github_runner_path_prefix }}/bin/github-runner"
 
 # String of path to the rc script.
 github_runner_rcd_file: "{{ github_runner_path_prefix }}/etc/rc.d/github_runner"
