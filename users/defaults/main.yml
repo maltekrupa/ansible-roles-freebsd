@@ -1,5 +1,9 @@
 ---
+
+# List of users to remove
 users_remove: []
+
+# Map of users to create with additional parameters available
 users_create: {}
 # Example
 # users_create:

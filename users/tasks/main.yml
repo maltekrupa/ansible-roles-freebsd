@@ -21,6 +21,20 @@
     home: "{{ users_create[item].home | default('/home/' + item) }}"
     shell: /usr/local/bin/zsh
   loop: "{{ users_create.keys() | flatten(levels=1) }}"
+  when: users_create[item].additional_groups is undefined
+  tags:
+    - users
+
+- name: Create users with additional groups
+  ansible.builtin.user:
+    name: "{{ item }}"
+    group: "{{ users_create[item].group | default('ops') }}"
+    home: "{{ users_create[item].home | default('/home/' + item) }}"
+    shell: /usr/local/bin/zsh
+    append: "{{ true if users_create[item].additional_groups != [] else false }}"
+    groups: "{{ users_create[item].additional_groups if users_create[item].additional_groups != [] else false }}"
+  loop: "{{ users_create.keys() | flatten(levels=1) }}"
+  when: users_create[item].additional_groups is defined
   tags:
     - users
 
