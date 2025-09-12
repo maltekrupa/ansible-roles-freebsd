@@ -31,6 +31,7 @@
     owner: root
     group: wheel
     mode: "0644"
+    validate: /usr/local/sbin/nginx -t -c %s
   notify: Reload nginx
 
 - name: Create vhosts

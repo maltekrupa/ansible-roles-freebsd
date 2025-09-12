@@ -5,6 +5,7 @@
     src: pf.conf
     dest: /etc/pf.conf
     mode: "0644"
+    validate: /sbin/pfctl -nf %s
   notify: Restart pf
 
 - name: Enable service

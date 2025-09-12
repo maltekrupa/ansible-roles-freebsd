@@ -9,6 +9,7 @@
     src: dnsmasq.conf
     dest: /usr/local/etc/dnsmasq.conf
     mode: "0644"
+    validate: /usr/local/sbin/dnsmasq --test --conf-file=%s
   notify: Restart dnsmasq
 
 - name: Enable service
