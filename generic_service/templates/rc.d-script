@@ -1,3 +1,0 @@
-export HOME="{{ generic_service_content_directory }}"
-
-: {{ '${' }}{{ generic_service_name }}_enable:="NO"{{ '}' }}
