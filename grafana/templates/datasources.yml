@@ -1,0 +1,9 @@
+apiVersion: 1
+
+datasources:
+{% for datasource in grafana_datasources %}
+  - name: "{{ datasource.name }}"
+    type: "{{ datasource.type }}"
+    access: "proxy"
+    url: "{{ datasource.url }}"
+{% endfor %}

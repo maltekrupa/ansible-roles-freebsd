@@ -5,3 +5,17 @@ grafana_package_name: grafana
 
 # Name of the rc service to manage for Grafana.
 grafana_service_name: grafana
+
+# List of data sources to configure in Grafana.
+# Each data source should have name, type, and url fields.
+# access will always be set to "proxy".
+#
+# Example:
+# grafana_datasources:
+#   - name: "Prometheus"
+#     type: "prometheus"
+#     url: "http://localhost:9090"
+#   - name: "Loki"
+#     type: "loki"
+#     url: "http://localhost:3100"
+grafana_datasources: []

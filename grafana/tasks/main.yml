@@ -15,6 +15,32 @@
   tags:
     - grafana
 
+- name: Create provisioning directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: wheel
+    mode: "0755"
+  loop:
+    - /usr/local/etc/grafana/provisioning
+    - /usr/local/etc/grafana/provisioning/datasources
+  tags:
+    - grafana
+
+- name: Create datasources configuration
+  ansible.builtin.template:
+    src: datasources.yml
+    dest: /usr/local/etc/grafana/provisioning/datasources/datasources.yml
+    mode: "0644"
+    owner: root
+    group: wheel
+  when: grafana_datasources != []
+  notify:
+    - Restart grafana
+  tags:
+    - grafana
+
 - name: Enable service
   community.general.sysrc:
     name: "{{ grafana_service_name }}_enable"
