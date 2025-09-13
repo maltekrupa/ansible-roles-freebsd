@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# PROVIDE: loki
+# REQUIRE: LOGIN DAEMON NETWORKING
+# KEYWORD: shutdown
+
+# Add the following lines to /etc/rc.conf to enable loki
+# loki_enable="YES"
+
+. /etc/rc.subr
+
+name="loki"
+rcvar="loki_enable"
+
+command="/usr/sbin/daemon"
+pidfile="/var/run/${name}.pid"
+daemon_pidfile="/var/run/daemon_${name}.pid"
+
+task="{{ loki_binary_file }} -config.file={{ loki_config_directory }}/loki.yml"
+procname="{{ loki_binary_file }}"
+
+loki_chdir="{{ loki_data_directory }}"
+
+command_args="-p ${pidfile} -P ${daemon_pidfile} -t ${name} -u {{ loki_user }} -H -o {{ loki_log_file }} ${task}"
+
+required_files="{{ loki_config_directory }}/loki.yml"
+
+load_rc_config $name
+run_rc_command "$1"

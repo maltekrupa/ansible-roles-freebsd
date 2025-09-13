@@ -1,0 +1,116 @@
+---
+
+- name: Create loki group
+  ansible.builtin.group:
+    name: "{{ loki_group }}"
+    system: true
+  tags:
+    - loki
+
+- name: Create loki user
+  ansible.builtin.user:
+    name: "{{ loki_user }}"
+    group: "{{ loki_group }}"
+    system: true
+    shell: /usr/sbin/nologin
+    home: /nonexistent
+    createhome: false
+  tags:
+    - loki
+
+- name: Create data directory
+  ansible.builtin.file:
+    path: "{{ loki_data_directory }}"
+    state: directory
+    owner: "{{ loki_user }}"
+    group: "{{ loki_group }}"
+    mode: "0750"
+  tags:
+    - loki
+
+- name: Create config directory
+  ansible.builtin.file:
+    path: "{{ loki_config_directory }}"
+    state: directory
+    owner: "{{ loki_user }}"
+    group: "{{ loki_group }}"
+    mode: "0750"
+  tags:
+    - loki
+
+- name: Download Loki binary
+  ansible.builtin.get_url:
+    url: "https://github.com/grafana/loki/releases/download/v{{ loki_version }}/loki-freebsd-amd64.zip"
+    dest: /tmp/loki-freebsd-amd64.zip
+    force: false
+    mode: "0750"
+    owner: root
+    group: wheel
+  tags:
+    - loki
+
+- name: Extract Loki binary
+  ansible.builtin.unarchive:
+    src: /tmp/loki-freebsd-amd64.zip
+    dest: /tmp
+    remote_src: true
+    creates: /tmp/loki-freebsd-amd64
+  tags:
+    - loki
+
+- name: Install Loki binary
+  ansible.builtin.copy:
+    src: /tmp/loki-freebsd-amd64
+    dest: "{{ loki_binary_file }}"
+    remote_src: true
+    mode: "0755"
+    owner: root
+    group: wheel
+  tags:
+    - loki
+
+- name: Create Loki configuration
+  ansible.builtin.template:
+    src: loki.yml
+    dest: "{{ loki_config_directory }}/loki.yml"
+    mode: "0640"
+    owner: "{{ loki_user }}"
+    group: "{{ loki_group }}"
+  notify:
+    - Restart loki
+  tags:
+    - loki
+
+- name: Create rc.d script
+  ansible.builtin.template:
+    src: rc.d-script
+    dest: "{{ loki_rcd_file }}"
+    mode: "0750"
+    owner: root
+    group: wheel
+  notify:
+    - Restart loki
+  tags:
+    - loki
+
+- name: Create newsyslog configuration
+  ansible.builtin.template:
+    src: newsyslog
+    dest: /usr/local/etc/newsyslog.conf.d/loki.conf
+    mode: "0644"
+  tags:
+    - loki
+
+- name: Enable service
+  community.general.sysrc:
+    name: loki_enable
+    value: "YES"
+  tags:
+    - loki
+
+- name: Start service
+  ansible.builtin.service:
+    name: loki
+    state: started
+  tags:
+    - loki

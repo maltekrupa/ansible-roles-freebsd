@@ -1,0 +1,31 @@
+---
+
+# Loki version to download from GitHub releases.
+loki_version: "3.5.5"
+
+# Installation directory for Loki binary.
+loki_binary_directory: /usr/local/bin
+
+# Binary filename for Loki.
+loki_binary_name: loki
+
+# Full path to Loki binary.
+loki_binary_file: "{{ loki_binary_directory }}/{{ loki_binary_name }}"
+
+# Configuration directory for Loki.
+loki_config_directory: /usr/local/etc/loki
+
+# Data directory for Loki.
+loki_data_directory: /var/db/loki
+
+# User to run Loki service.
+loki_user: loki
+
+# Group for Loki service.
+loki_group: loki
+
+# Log file for Loki.
+loki_log_file: /var/log/loki.log
+
+# Rc.d script location.
+loki_rcd_file: /usr/local/etc/rc.d/loki
