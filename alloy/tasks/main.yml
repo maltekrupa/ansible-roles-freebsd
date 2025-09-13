@@ -1,0 +1,32 @@
+---
+
+- name: Install
+  community.general.pkgng:
+    name: "{{ alloy_package_name }}"
+    state: present
+  tags:
+    - alloy
+
+- name: Create Alloy configuration
+  ansible.builtin.template:
+    src: alloy.flow
+    dest: "{{ alloy_config_file }}"
+    mode: "0644"
+  notify:
+    - Restart alloy
+  tags:
+    - alloy
+
+- name: Enable service
+  community.general.sysrc:
+    name: "{{ alloy_service_name }}_enable"
+    value: "YES"
+  tags:
+    - alloy
+
+- name: Start service
+  ansible.builtin.service:
+    name: "{{ alloy_service_name }}"
+    state: started
+  tags:
+    - alloy

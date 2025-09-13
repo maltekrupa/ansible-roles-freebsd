@@ -1,0 +1,13 @@
+---
+
+# Name of the FreeBSD package to install for Alloy.
+alloy_package_name: alloy
+
+# Name of the rc service to manage for Alloy.
+alloy_service_name: alloy
+
+# Prometheus remote write endpoint.
+alloy_prometheus_endpoint: "http://localhost:9090/api/v1/write"
+
+# Alloy configuration file.
+alloy_config_file: "/usr/local/etc/alloy.flow"

@@ -1,0 +1,12 @@
+prometheus.exporter.unix "default" {}
+
+prometheus.scrape "default" {
+  targets    = prometheus.exporter.unix.default.targets
+  forward_to = [prometheus.remote_write.default.receiver]
+}
+
+prometheus.remote_write "default" {
+  endpoint {
+    url = "{{ alloy_prometheus_endpoint }}"
+  }
+}
