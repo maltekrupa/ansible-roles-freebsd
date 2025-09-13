@@ -1,0 +1,7 @@
+---
+
+# Name of the FreeBSD package to install for Prometheus.
+prometheus_package_name: prometheus3
+
+# Name of the rc service to manage for Prometheus.
+prometheus_service_name: prometheus

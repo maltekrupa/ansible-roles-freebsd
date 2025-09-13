@@ -1,0 +1,15 @@
+---
+
+- name: Restart prometheus
+  ansible.builtin.service:
+    name: "{{ prometheus_service_name }}"
+    state: restarted
+  tags:
+    - prometheus
+
+- name: Reload prometheus
+  ansible.builtin.service:
+    name: "{{ prometheus_service_name }}"
+    state: reloaded
+  tags:
+    - prometheus

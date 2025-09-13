@@ -1,0 +1,29 @@
+---
+
+- name: Install
+  community.general.pkgng:
+    name: "{{ prometheus_package_name }}"
+    state: present
+  tags:
+    - prometheus
+
+- name: Configure remote write receiver
+  community.general.sysrc:
+    name: "{{ prometheus_service_name }}_args"
+    value: "--web.enable-remote-write-receiver"
+  tags:
+    - prometheus
+
+- name: Enable service
+  community.general.sysrc:
+    name: "{{ prometheus_service_name }}_enable"
+    value: "YES"
+  tags:
+    - prometheus
+
+- name: Start service
+  ansible.builtin.service:
+    name: "{{ prometheus_service_name }}"
+    state: started
+  tags:
+    - prometheus
