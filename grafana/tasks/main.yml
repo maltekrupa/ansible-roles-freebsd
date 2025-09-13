@@ -1,0 +1,30 @@
+---
+
+- name: Install
+  community.general.pkgng:
+    name: "{{ grafana_package_name }}"
+    state: present
+  tags:
+    - grafana
+
+- name: Create newsyslog configuration
+  ansible.builtin.template:
+    src: newsyslog
+    dest: /usr/local/etc/newsyslog.conf.d/grafana.conf
+    mode: "0644"
+  tags:
+    - grafana
+
+- name: Enable service
+  community.general.sysrc:
+    name: "{{ grafana_service_name }}_enable"
+    value: "YES"
+  tags:
+    - grafana
+
+- name: Start service
+  ansible.builtin.service:
+    name: "{{ grafana_service_name }}"
+    state: started
+  tags:
+    - grafana

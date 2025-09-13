@@ -1,0 +1,7 @@
+---
+
+# Name of the FreeBSD package to install for Grafana.
+grafana_package_name: grafana
+
+# Name of the rc service to manage for Grafana.
+grafana_service_name: grafana
