@@ -29,6 +29,6 @@ haproxy_servers: []
 #     http-check send hdr User-Agent "haproxy" meth GET uri /
 
 haproxy_global_vars: []
-haproxy_connect_timeout: 5000
-haproxy_client_timeout: 50000
-haproxy_server_timeout: 50000
+haproxy_connect_timeout: 5s
+haproxy_client_timeout: 60s
+haproxy_server_timeout: 60s
