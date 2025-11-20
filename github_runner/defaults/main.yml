@@ -1,13 +1,13 @@
 ---
 
 # String of version to install.
-github_runner_version: v0.10.0
+github_runner_version: v0.12.0
 
 # String of sha256 checksum of extracted binary.
-github_runner_checksum_binary: e7a91a14358723d7ca7d109ecef7ced0fe097116f4e024ceda5cca356d164b14
+github_runner_checksum_binary: be667bc1e4f1c5c2e5413d4b6d7f987849da90fbe08cbd5b654d1a07cd002940
 
 # String of sha256 checksum of downloaded archive.
-github_runner_checksum_archive: 9001d82e6a3f741a270a06aa1a32146c1a8588b4a56d46dca8d21aa25ab11d7e
+github_runner_checksum_archive: 8b489e4ebc79b464cc752cdea84b2554afce7fa4ff51eff9f6da3f4f5915bdcb
 
 # String of github username.
 github_runner_username: "github"
