@@ -1,0 +1,9 @@
+---
+# Disable daily periodic tasks
+periodic_daily_enable: false
+
+# Disable weekly periodic tasks
+periodic_weekly_enable: false
+
+# Disable monthly periodic tasks
+periodic_monthly_enable: false
