@@ -10,25 +10,6 @@
     dest: /etc/mail/mailer.conf
     mode: "0644"
 
-- name: Create periodic.conf
-  ansible.builtin.copy:
-    content: ""
-    dest: /etc/periodic.conf
-    force: false
-    owner: root
-    group: wheel
-    mode: "0644"
-
-- name: Disable sendmail specific periodic configuration
-  ansible.builtin.lineinfile:
-    path: /etc/periodic.conf
-    line: "{{ item }}"
-  loop:
-    - daily_clean_hoststat_enable="NO"
-    - daily_status_mail_rejects_enable="NO"
-    - daily_status_include_submit_mailq="NO"
-    - daily_submit_queuerun="NO"
-
 - name: Configure dma.conf
   ansible.builtin.template:
     src: dma.conf
