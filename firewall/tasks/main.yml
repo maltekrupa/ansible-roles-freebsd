@@ -1,5 +1,22 @@
 ---
 
+- name: Install sshguard
+  community.general.pkgng:
+    name: sshguard
+    state: present
+
+- name: Configure sshguard
+  ansible.builtin.template:
+    src: sshguard.conf
+    dest: /usr/local/etc/sshguard.conf
+    mode: "0644"
+  notify: Restart sshguard
+
+- name: Enable sshguard
+  community.general.sysrc:
+    name: sshguard_enable
+    value: "YES"
+
 - name: Configure
   ansible.builtin.template:
     src: pf.conf
