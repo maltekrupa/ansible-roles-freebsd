@@ -10,3 +10,42 @@ prometheus.remote_write "default" {
     url = "{{ alloy_prometheus_endpoint }}"
   }
 }
+
+local.file_match "jails" {
+  path_targets = [
+{% for jail in alloy_jails %}
+{% for log_file in alloy_standard_logs %}
+{% set path_sanitized = ('var/log/' ~ log_file) | replace('/', '_') | replace('.', '_') | replace('*', 'star') %}
+{% set service_name = log_file[:-4] if log_file[-4:] == '.log' else log_file %}
+    {
+      __path__ = "/usr/local/bastille/jails/{{ jail }}/root/var/log/{{ log_file }}",
+      jail = "{{ jail }}",
+      log_path = "{{ path_sanitized }}",
+      service_name = "{{ service_name }}",
+    },
+{% endfor %}
+{% endfor %}
+{% for item in alloy_custom_logs | default([]) %}
+{% set path_sanitized = item.path | replace('/', '_') | replace('.', '_') | replace('*', 'star') %}
+    {
+      __path__ = "/usr/local/bastille/jails/{{ item.jail }}/root/{{ item.path }}",
+      jail = "{{ item.jail }}",
+      log_path = "{{ path_sanitized }}",
+{% for key, value in item.tags | default({}) | items %}
+      {{ key }} = "{{ value }}",
+{% endfor %}
+    },
+{% endfor %}
+  ]
+}
+
+loki.source.file "jails" {
+  targets    = local.file_match.jails.targets
+  forward_to = [loki.write.default.receiver]
+}
+
+loki.write "default" {
+  endpoint {
+    url = "{{ alloy_loki_endpoint }}"
+  }
+}

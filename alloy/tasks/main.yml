@@ -17,6 +17,27 @@
   tags:
     - alloy
 
+- name: Configure Alloy service arguments
+  community.general.sysrc:
+    name: "{{ alloy_service_name }}_args"
+    value: "--disable-reporting"
+  tags:
+    - alloy
+
+- name: Configure Alloy service user
+  community.general.sysrc:
+    name: "{{ alloy_service_name }}_user"
+    value: "{{ alloy_user }}"
+  tags:
+    - alloy
+
+- name: Configure Alloy service group
+  community.general.sysrc:
+    name: "{{ alloy_service_name }}_group"
+    value: "{{ alloy_group }}"
+  tags:
+    - alloy
+
 - name: Enable service
   community.general.sysrc:
     name: "{{ alloy_service_name }}_enable"

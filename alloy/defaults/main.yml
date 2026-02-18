@@ -6,8 +6,44 @@ alloy_package_name: alloy
 # Name of the rc service to manage for Alloy.
 alloy_service_name: alloy
 
+# User to run Alloy service as.
+alloy_user: root
+
+# Group to run Alloy service as.
+alloy_group: wheel
+
 # Prometheus remote write endpoint.
 alloy_prometheus_endpoint: "http://localhost:9090/api/v1/write"
 
+# Loki remote write endpoint.
+alloy_loki_endpoint: "http://localhost:3100/loki/api/v1/push"
+
 # Alloy configuration file.
 alloy_config_file: "/usr/local/etc/alloy.flow"
+
+# List of jails to collect standard logs from.
+alloy_jails: []
+
+# Standard log files to collect from each jail in /var/log/.
+alloy_standard_logs:
+  - "messages"
+  - "auth.log"
+  - "cron"
+  - "daemon.log"
+  - "maillog"
+  - "security"
+  - "userlog"
+
+# Custom log files to collect per jail. Paths are relative to jail root and support globs.
+# Example:
+#   alloy_custom_logs:
+#     - jail: web1
+#       path: var/log/nginx/access.log
+#       tags:
+#         app: nginx
+#         type: access
+#     - jail: web1
+#       path: var/log/nginx/*.log
+#       tags:
+#         app: nginx
+alloy_custom_logs: []
