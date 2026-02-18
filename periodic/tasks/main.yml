@@ -2,7 +2,7 @@
 - name: Disable daily periodic in /etc/crontab
   ansible.builtin.replace:
     path: /etc/crontab
-    regexp: '^(.*periodic\sdaily)$'
+    regexp: '^([^#].*periodic\sdaily)$'
     replace: '#\1'
   when: not periodic_daily_enable
   tags:
@@ -11,7 +11,7 @@
 - name: Disable weekly periodic in /etc/crontab
   ansible.builtin.replace:
     path: /etc/crontab
-    regexp: '^(.*periodic\sweekly)$'
+    regexp: '^([^#].*periodic\sweekly)$'
     replace: '#\1'
   when: not periodic_weekly_enable
   tags:
@@ -20,7 +20,7 @@
 - name: Disable monthly periodic in /etc/crontab
   ansible.builtin.replace:
     path: /etc/crontab
-    regexp: '^(.*periodic\smonthly)$'
+    regexp: '^([^#].*periodic\smonthly)$'
     replace: '#\1'
   when: not periodic_monthly_enable
   tags:
@@ -29,7 +29,7 @@
 - name: Enable daily periodic in /etc/crontab
   ansible.builtin.replace:
     path: /etc/crontab
-    regexp: '^#(.*periodic\sdaily)$'
+    regexp: '^#+(.*periodic\sdaily)$'
     replace: '\1'
   when: periodic_daily_enable
   tags:
@@ -38,7 +38,7 @@
 - name: Enable weekly periodic in /etc/crontab
   ansible.builtin.replace:
     path: /etc/crontab
-    regexp: '^#(.*periodic\sweekly)$'
+    regexp: '^#+(.*periodic\sweekly)$'
     replace: '\1'
   when: periodic_weekly_enable
   tags:
@@ -47,7 +47,7 @@
 - name: Enable monthly periodic in /etc/crontab
   ansible.builtin.replace:
     path: /etc/crontab
-    regexp: '^#(.*periodic\smonthly)$'
+    regexp: '^#+(.*periodic\smonthly)$'
     replace: '\1'
   when: periodic_monthly_enable
   tags:
