@@ -2,6 +2,11 @@
 
 nginx_configuration_directory: /usr/local/etc/nginx
 
+# IPs or CIDRs of proxies in front of nginx (e.g. HAProxy). When set, nginx uses
+# X-Forwarded-For to set $remote_addr to the real client IP.
+# Example: ['10.0.0.1', '192.168.1.0/24']
+nginx_trusted_proxies: []
+
 # example
 # nginx_vhosts:
 #   example:
