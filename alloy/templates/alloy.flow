@@ -7,7 +7,7 @@ prometheus.scrape "default" {
 
 {% for target in alloy_prometheus_scrape_targets %}
 prometheus.scrape "{{ target.job }}" {
-  targets    = [{"__address__" = "{{ target.address }}", "job" = "{{ target.job }}"}]
+  targets    = [{"__address__" = "{{ target.address }}", "job" = "{{ target.job }}", "instance" = "{{ ansible_hostname }}"}]
   forward_to = [prometheus.remote_write.default.receiver]
 }
 {% endfor %}
