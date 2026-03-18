@@ -5,6 +5,13 @@ prometheus.scrape "default" {
   forward_to = [prometheus.remote_write.default.receiver]
 }
 
+{% for target in alloy_prometheus_scrape_targets %}
+prometheus.scrape "{{ target.job }}" {
+  targets    = [{"__address__" = "{{ target.address }}", "job" = "{{ target.job }}"}]
+  forward_to = [prometheus.remote_write.default.receiver]
+}
+{% endfor %}
+
 prometheus.remote_write "default" {
   endpoint {
     url = "{{ alloy_prometheus_endpoint }}"

@@ -15,6 +15,18 @@ alloy_group: wheel
 # Prometheus remote write endpoint.
 alloy_prometheus_endpoint: "http://localhost:9090/api/v1/write"
 
+# Additional Prometheus scrape targets to forward to Prometheus.
+# Each item: address (required), job (required).
+# Example:
+#   alloy_prometheus_scrape_targets:
+#     - address: 127.0.0.1:9452
+#       job: jail_exporter
+#     - address: 127.0.0.1:9100
+#       job: node_exporter
+alloy_prometheus_scrape_targets:
+  - address: 127.0.0.1:9452
+    job: jail_exporter
+
 # Loki remote write endpoint.
 alloy_loki_endpoint: "http://localhost:3100/loki/api/v1/push"
 
