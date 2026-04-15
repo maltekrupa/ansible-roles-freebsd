@@ -1,10 +1,5 @@
 global
-{# We have no loopback on jails (yet?), so bind to a RFC1918 address #}
-{% if haproxy_in_jail %}
   log {{ network_ipv4_address }}:514 local0
-{% else %}
-  log 127.0.0.1:514 local0
-{% endif %}
   chroot /var/empty
   user www
   group www
